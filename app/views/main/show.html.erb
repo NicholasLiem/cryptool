@@ -39,14 +39,17 @@
           <%= form.file_field :file, class: 'form-input' %>
         </div>
 
-        <%= form.label :algorithm, "Choose Encryption Algorithm:", class: 'form-label' %>
+        <%= form.label :algorithm, "Cipher Algorithm:", class: 'form-label' %>
         <%= form.select :algorithm, options_for_select(['Vigenere Cipher', 'Auto-Key Vigenere Cipher', 'Extended Vigenere Cipher', 'Playfair Cipher', 'Affine Cipher', 'Hill Cipher', 'Super Encryption', 'Enigma Cipher']), {}, class: 'form-select' %>
+
+        <%= form.label :name, "Key:", class: 'form-label' %>
+        <%= form.text_field :name, class: 'form-input' %>
 
       </div>
 
       <div class='button-container'>
-        <%= form.submit "Encrypt", id:"encrypt", class: 'form-encrypt' %>
-        <%= form.submit "Decrypt", id:"decrypt", class: 'form-decrypt' %>
+        <%= form.submit "Encrypt", id:"encrypt", class: 'encrypt-button' %>
+        <%= form.submit "Decrypt", id:"decrypt", class: 'decrypt-button' %>
       </div>
 
     </div>
@@ -54,8 +57,7 @@
   </div>
 
   <footer>
-    <p> © Cryptool </p>
-    <p> IF4020  </p>
+    <p> © Cryptool - IF4020  </p>
   </footer>
 
 </div> 

@@ -31,3 +31,11 @@ document.addEventListener("turbo:load", function () {
     inputTypeSelect.dispatchEvent(new Event("change"));
   }
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('form-input').addEventListener('keydown', function(event) {
+    if (event.shiftKey && event.keyCode === 13) {
+      event.preventDefault();
+    }
+  });
+});
