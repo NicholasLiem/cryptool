@@ -1,12 +1,21 @@
 <%= form_with model: @encrypted_file, url: upload_encrypted_file_path, local: true do |form| %>
-  <%= form.label :name, "File Name:" %>
-  <%= form.text_field :name %>
+  <%= form.label :input_type, "Input type:", class: 'form-label' %>
+  <%= form.select :input_type, options_for_select(['Text', 'Binary File'], selected: @encrypted_file.input_type), id: 'input_type_select', class: 'form-select' %>
 
-  <%= form.label :file, "Select File:" %>
-  <%= form.file_field :file %>
+  <div id="text_input" style="display: none;">
+    <%= form.label :name, "File Name:", class: 'form-label' %>
+    <%= form.text_field :name, class: 'form-input' %>
+  </div>
+  
+  <div id="file_input" style="display: none;">
+    <%= form.label :file, "Select File:", class: 'form-label' %>
+    <%= form.file_field :file, class: 'form-input' %>
+  </div>
 
-  <%= form.label :algorithm, "Choose Encryption Algorithm:" %>
-  <%= form.select :algorithm, options_for_select(['AES', 'RSA', 'Other']) %>
+  <%= form.label :algorithm, "Choose Encryption Algorithm:", class: 'form-label' %>
+  <%= form.select :algorithm, options_for_select(['AES', 'RSA', 'Other']), {}, class: 'form-select' %>
 
-  <%= form.submit "Upload and Encrypt" %>
+  <%= form.submit "Upload and Encrypt", class: 'form-submit' %>
 <% end %>
+
+<%= javascript_include_tag 'form_behavior' %>
