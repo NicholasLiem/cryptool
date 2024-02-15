@@ -23,15 +23,26 @@ cd cryptool
 bundle install
 ```
 
-4. Run migrations
+4. Create database
+```sh
+rails db:create
+```
+
+5. Run migrations
 ```sh
 rails db:migrate
 ```
 
-5. Run the server
+6. Run the server
 ```sh
 rails server
 ```
+
+7. Open the tool in this url
+```sh
+http://localhost:3000/cryptool/tool
+```
+
 ## ⚠️ Dependencies 
 ## 📖 How to add field to a model
 1. Generate a new migration file 
@@ -43,3 +54,6 @@ rails generate migration <migration_name> <field>:<data_type>
 ```sh
 rails db:migrate
 ```
+## 🫂 Contributors
+Juan Christopher Santoso(1352116)
+Nicholas Liem (13521135)
