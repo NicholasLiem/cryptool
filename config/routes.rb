@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   # Web routes
   get   'cryptool/tool', to: 'main#show', as: 'main_page'
+  root 'main#show'
 
   # File handling routes
   post  'cryptool/upload', to: 'encrypted_files#upload', as: 'upload_encrypted_file'

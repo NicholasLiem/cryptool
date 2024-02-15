@@ -1,20 +1,63 @@
 <%= javascript_include_tag 'testing' %>
+<%= stylesheet_link_tag "main_sheets" %>
 <%= form_with model: @encrypted_file, url: upload_encrypted_file_path, local: true do |form| %>
-  <%= form.label :input_type, "Input type:", class: 'form-label' %>
-  <%= form.select :input_type, options_for_select(['Text', 'Binary File'], selected: @encrypted_file.input_type), id: 'input_type_select', class: 'form-select' %>
-  
-  <div id="text_input" style="display: none;">
-    <%= form.label :name, "File Name:", class: 'form-label' %>
-    <%= form.text_field :name, class: 'form-input' %>
-  </div>
-  
-  <div id="file_input" style="display: none;">
-    <%= form.label :file, "Select File:", class: 'form-label' %>
-    <%= form.file_field :file, class: 'form-input' %>
+
+
+
+<div class='page-container'>
+
+  <div class='title-container'>
+    <h3 class='title'> Cryptool </h3>
   </div>
 
-  <%= form.label :algorithm, "Choose Encryption Algorithm:", class: 'form-label' %>
-  <%= form.select :algorithm, options_for_select(['AES', 'RSA', 'Other']), {}, class: 'form-select' %>
+  <div class='content-container'>
 
-  <%= form.submit "Upload and Encrypt", class: 'form-submit' %>
+    <div class='asset-container'>
+      <%= image_tag 'toothless.gif', width:"350px" %>
+      <audio src="<%= audio_path 'driftveil_city.mp3'%>" id="music" type="audio/mpeg" controls>
+        Your browser does not support the audio element.
+      </audio>
+    </div>
+
+    <div class='form-container'>
+
+      <div class='grid-container'>
+        <%= form.label :input_type, "Input Type:", class: 'form-label' %>
+        <%= form.select :input_type, options_for_select(['Text', 'Binary File'], selected: @encrypted_file.input_type), id: 'input_type_select', class: 'form-select' %>
+        
+        <div id="text_input_label" style="display: none;">
+          <%= form.label :name, "Input Text:", class: 'form-label' %>
+        </div>
+        <div id="text_input" style="display: none;">
+          <%= form.text_field :name, class: 'form-input' %>
+        </div>
+        
+        <div id="file_input" style="display: none;">
+          <%= form.label :file, "Select File:", class: 'form-label' %>
+        </div>
+        <div id="file_input_label" style="display: none;">
+          <%= form.file_field :file, class: 'form-input' %>
+        </div>
+
+        <%= form.label :algorithm, "Choose Encryption Algorithm:", class: 'form-label' %>
+        <%= form.select :algorithm, options_for_select(['Vigenere Cipher', 'Auto-Key Vigenere Cipher', 'Extended Vigenere Cipher', 'Playfair Cipher', 'Affine Cipher', 'Hill Cipher', 'Super Encryption', 'Enigma Cipher']), {}, class: 'form-select' %>
+
+      </div>
+
+      <div class='button-container'>
+        <%= form.submit "Encrypt", id:"encrypt", class: 'form-encrypt' %>
+        <%= form.submit "Decrypt", id:"decrypt", class: 'form-decrypt' %>
+      </div>
+
+    </div>
+
+  </div>
+
+  <footer>
+    <p> © Cryptool </p>
+    <p> IF4020  </p>
+  </footer>
+
+</div> 
+
 <% end %>
