@@ -17,6 +17,17 @@ class EncryptedFilesController < ApplicationController
     end
   end
 
+  def download_file
+    encrypted_file = EncryptedFile.find(params[:id])
+    blob = encrypted_file.file.blob
+
+    if blob.present?
+      redirect_to rails_blob_url(blob)
+    else
+      head :not_found
+    end
+  end
+
   private
 
   def encrypted_file_params
