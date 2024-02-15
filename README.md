@@ -1,10 +1,11 @@
 # Cryptool
-A local software tool to encrypt files
+A local ruby on rails server to host a cryptography tool for use
 
 ## ⚡ What is this repository?
-To add description
+A self-hosted cryptography tool to encrypt and decrypt files or text based with more than 7 different encryption algorithms
 
 ## 🔥 Features
+- Encrypt and decrypt text or file with your own key and multiple encryption algorithms
 
 ## 🖥️ Running locally for development
 
@@ -55,5 +56,5 @@ rails generate migration <migration_name> <field>:<data_type>
 rails db:migrate
 ```
 ## 🫂 Contributors
-Juan Christopher Santoso(1352116)
-Nicholas Liem (13521135)
+- Juan Christopher Santoso (1352116)
+- Nicholas Liem (13521135)
