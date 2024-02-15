@@ -1,0 +1,12 @@
+<%= form_with model: @encrypted_file, url: encrypted_files_path, local: true do |form| %>
+  <%= form.label :name, "File Name:" %>
+  <%= form.text_field :name %>
+
+  <%= form.label :file, "Select File:" %>
+  <%= form.file_field :file %>
+
+  <%= form.label :algorithm, "Choose Encryption Algorithm:" %>
+  <%= form.select :algorithm, options_for_select(['AES', 'RSA', 'Other']) %>
+
+  <%= form.submit "Upload and Encrypt" %>
+<% end %>
