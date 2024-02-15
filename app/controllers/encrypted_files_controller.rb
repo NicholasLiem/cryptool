@@ -3,7 +3,7 @@ class EncryptedFilesController < ApplicationController
     @encrypted_file = EncryptedFile.new
   end
 
-  def create
+  def upload
     @encrypted_file = EncryptedFile.new(encrypted_file_params)
 
     if @encrypted_file.save
@@ -17,7 +17,7 @@ class EncryptedFilesController < ApplicationController
     end
   end
 
-  def download_file
+  def download
     encrypted_file = EncryptedFile.find(params[:id])
     blob = encrypted_file.file.blob
 

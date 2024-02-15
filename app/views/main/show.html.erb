@@ -1,4 +1,4 @@
-<%= form_with model: @encrypted_file, url: encrypted_files_path, local: true do |form| %>
+<%= form_with model: @encrypted_file, url: upload_encrypted_file_path, local: true do |form| %>
   <%= form.label :name, "File Name:" %>
   <%= form.text_field :name %>
 

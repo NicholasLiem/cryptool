@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
-  get 'encrypted_files/new', to: 'encrypted_files#new', as: 'new_encrypted_file'
+  # Web routes
+  get   'cryptool/tool', to: 'main#show', as: 'main_page'
 
-  post 'cryptool', to: 'encrypted_files#create', as: 'encrypted_files'
-  get 'cryptool/download/:id', to: 'encrypted_files#download_file', as: 'download_encrypted_file'
+  # File handling routes
+  post  'cryptool/upload', to: 'encrypted_files#upload', as: 'upload_encrypted_file'
+  get   'cryptool/download/:id', to: 'encrypted_files#download', as: 'download_encrypted_file'
 end
