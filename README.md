@@ -56,5 +56,5 @@ rails generate migration <migration_name> <field>:<data_type>
 rails db:migrate
 ```
 ## 🫂 Contributors
-- Juan Christopher Santoso (1352116)
+- Juan Christopher Santoso (13521116)
 - Nicholas Liem (13521135)
