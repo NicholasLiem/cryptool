@@ -1,24 +1,36 @@
-# README
+# Cryptool
+A local software tool to encrypt files
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## ⚡ What is this repository?
+To add description
 
-Things you may want to cover:
+## 🔥 Features
 
-* Ruby version
+## 🖥️ Running locally for development
 
-* System dependencies
+1. Clone this repository
+```sh
+git@github.com:NicholasLiem/cryptool.git
+```
 
-* Configuration
+2. Change the current directory to 'cryptool' folder
+```sh
+cd cryptool
+```
 
-* Database creation
+3. Install gem dependencies
+```sh
+bundle install
+```
 
-* Database initialization
+4. Run migrations
+```sh
+rails db:migrate
+```
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+5. Run the server
+```sh
+rails server
+```
+## ⚠️ Dependencies 
+## 📖 Checklist to be Added
