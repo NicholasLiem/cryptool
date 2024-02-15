@@ -33,4 +33,13 @@ rails db:migrate
 rails server
 ```
 ## ⚠️ Dependencies 
-## 📖 Checklist to be Added
+## 📖 How to add field to a model
+1. Generate a new migration file 
+```sh
+rails generate migration <migration_name> <field>:<data_type>
+```
+2. Edit the migration file
+3. Run db migrations
+```sh
+rails db:migrate
+```
