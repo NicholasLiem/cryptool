@@ -1,7 +1,8 @@
+<%= javascript_include_tag 'testing' %>
 <%= form_with model: @encrypted_file, url: upload_encrypted_file_path, local: true do |form| %>
   <%= form.label :input_type, "Input type:", class: 'form-label' %>
   <%= form.select :input_type, options_for_select(['Text', 'Binary File'], selected: @encrypted_file.input_type), id: 'input_type_select', class: 'form-select' %>
-
+  
   <div id="text_input" style="display: none;">
     <%= form.label :name, "File Name:", class: 'form-label' %>
     <%= form.text_field :name, class: 'form-input' %>
