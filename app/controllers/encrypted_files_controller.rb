@@ -1,8 +1,4 @@
 class EncryptedFilesController < ApplicationController
-  def new
-    @encrypted_file = EncryptedFile.new
-  end
-
   def encrypt_text
     # Extract parameters
     plain_text = params[:plain_text]
