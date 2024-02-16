@@ -1,19 +1,9 @@
 class EncryptionService
-  ALGORITHMS = {
-    vigenere: 'Vigenere Cipher',
-  }.freeze
+  def encrypt_data(data, key)
+    raise NotImplementedError, "This #{self.class} cannot respond to:"
+  end
 
-  def self.encrypt(text, algorithm_key, key = nil)
-    algorithm = ALGORITHMS[algorithm_key.to_sym]
-
-    case algorithm
-    when ALGORITHMS[:vigenere]
-      result = "test"
-      result.concat(text)
-      result.concat(key)
-      result
-    else
-      nil
-    end
+  def decrypt_data(data, key)
+    raise NotImplementedError, "This #{self.class} cannot respond to:"
   end
 end
