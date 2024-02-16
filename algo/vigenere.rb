@@ -57,7 +57,44 @@ end
 
 
 def decrypt(str, key)
+  chipherText = str.upcase
+  key = key.upcase
+  chipherTextLength = chipherText.length
+  keyLength = key.length
 
+  result = ""
+  keyIdx = 0
+  for i in 0..(chipherTextLength-1)    
+    # Reset if it achieves max
+    if (keyIdx == keyLength)
+      keyIdx = 0
+    end
+
+    tempChar = chipherText[i]
+    keyChar = key[keyIdx]
+
+    # Check if it is a letter and upcase
+    if (isLetterAndUpperCase(tempChar))
+      chipherInt = tempChar.ord - 65
+      keyInt = keyChar.ord - 65
+
+
+      # NewChar int
+      plainInt = (chipherInt - keyInt) % 26 + 65
+      plainChar = plainInt.chr
+
+      # Add to result
+      result = result + plainChar
+
+      # Increment
+      keyIdx = keyIdx + 1
+    
+    # If not, leave it as it is
+    else
+      result = result + tempChar
+    end
+  end
+  return result
 end
 
 key = "selat sunda"
@@ -67,5 +104,6 @@ cip = "VMYAL HYAGIVMVAG CIGD TWVYAMW GRPIFXL KXHUQD PALLK LWEBOAZ HLN HJUAJ TME 
 key = prepareKey(key)
 # str = preparePlainText(str)
 
-puts encrypt(str, key)
+# puts encrypt(str, key)
+# puts decrypt(cip, key)
 
