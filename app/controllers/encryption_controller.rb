@@ -20,6 +20,7 @@ class EncryptionController < ApplicationController
         nil
     end
   end
+  
   def handle_encryption_result(encrypted_data)
     if encrypted_data
       session[:encrypted_text] = encrypted_data
