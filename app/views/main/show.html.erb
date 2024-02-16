@@ -21,7 +21,7 @@
         <%= label_tag :input_type, "Input Type:", id:"input_type_select_label", class:'form-label'%>
         <%= select_tag :input_type, options_for_select(['Text', 'Binary File'], selected: params[:input_type]), class:'form-select', id:"input_type_select" %>
 
-        <div id='text_input_label' style="display:none"> 
+        <div id='text_input_label'> 
           <%= label_tag :plain_text, "Input Text:", class:'form-label', id:"text_input_label" %>
         </div>
         <%= text_field_tag :plain_text, params[:plain_text], id:"text_input", class:"form-input" %>
@@ -61,14 +61,8 @@
       <div class='button-container'>
         <%= submit_tag "Encrypt", id:"encrypt", class: 'encrypt-button' %>
         <%= form.submit "Decrypt", id:"decrypt", class: 'decrypt-button' %>
+        <%= button_tag "Show Last Result", id:"result", class: 'result-button' %>
       </div>
-
-      <% if @encrypted_text %>
-        <div class='result-container'>
-          <label class="form-label">Encrypted Text:</label>
-          <textarea class="form-input" readonly><%= @encrypted_text %></textarea>
-        </div>
-      <% end %>
 
     </div>
   </div>
@@ -78,4 +72,16 @@
   </footer>
 
 </div> 
+
+<% if @encrypted_text %>
+  <div class='popup-container' id='popup'>
+    <div class='black-overlay' id='black-overlay'></div>
+
+    <div class='result-container'>
+      <label class="subtitle"> Cipher Result </label>
+      <textarea class="result-text-area" readonly><%= @encrypted_text %></textarea>
+    </div>
+  </div>
+<% end %>
+
 <% end %>

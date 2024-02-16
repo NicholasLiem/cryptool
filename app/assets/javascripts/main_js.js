@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
   var audio = document.getElementById("music");
-  audio.volume = 0.2; 
+  audio.volume = 0.2;
   audio.addEventListener("canplaythrough", function () {
-    audio.play(); 
+    audio.play();
   });
 });
 
@@ -14,7 +14,6 @@ document.addEventListener("turbo:load", function () {
   var fileInputLabel = document.getElementById("file_input_label");
 
   inputTypeSelect.addEventListener("change", function () {
-    console.log(this.value)
     if (this.value === "Text") {
       textInput.style.display = "block";
       textInputLabel.style.display = "block";
@@ -33,10 +32,12 @@ document.addEventListener("turbo:load", function () {
   }
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('form-input').addEventListener('keydown', function(event) {
-    if (event.shiftKey && event.keyCode === 13) {
-      event.preventDefault();
-    }
-  });
+
+document.getElementById("black-overlay").addEventListener("click", function () {
+  document.getElementById('popup').style.display = "none";
 });
+
+document.getElementById("result").addEventListener("click", function (){
+  document.getElementById('popup').style.display = "flex";
+})
+
