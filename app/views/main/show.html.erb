@@ -1,59 +1,81 @@
-<%= javascript_include_tag 'testing' %>
+<%= javascript_include_tag 'main_js' %>
 <%= stylesheet_link_tag "main_sheets" %>
-<%= form_with model: @encrypted_file, url: upload_encrypted_file_path, local: true do |form| %>
-
-
-
+<%= form_with url: encrypt_text_path, local: true do |form| %>
 <div class='page-container'>
-
+  
   <div class='title-container'>
     <h3 class='title'>Cryptool</h3>
   </div>
 
   <div class='content-container'>
-
     <div class='asset-container'>
       <%= image_tag 'toothless.gif', width:"350px" %>
       <audio src="<%= audio_path 'driftveil_city.mp3'%>" id="music" type="audio/mpeg" controls>
         Your browser does not support the audio element.
       </audio>
     </div>
-
+    
     <div class='form-container'>
-
       <div class='grid-container'>
-        <%= form.label :input_type, "Input Type:", class: 'form-label' %>
-        <%= form.select :input_type, options_for_select(['Text', 'Binary File'], selected: @encrypted_file.input_type), id: 'input_type_select', class: 'form-select' %>
+
+        <div class='form-label' id="input_type_select_label">
+          <%= label_tag :input_type, "Input Type:" %>
+        </div>
+        <div class='form-select' id="input_type_select">
+          <%= select_tag :input_type, options_for_select(['Text', 'Binary File'], selected: params[:input_type]) %>
+        </div>
+
+        <div class='form-label' id="text_input_label" style="display: none;">
+          <%= label_tag :plain_text, "Input Text:" %>
+        </div>
+        <div class='form-input' id="text_input" style="display: none;">
+          <%= text_field_tag :plain_text %>
+        </div>
         
-        <div id="text_input_label" style="display: none;">
-          <%= form.label :name, "Input Text:", class: 'form-label' %>
+        <div class='form-label' id="file_input_label" style="display: none;">
+          <%= label_tag :file, "Select File:" %>
         </div>
-        <div id="text_input" style="display: none;">
-          <%= form.text_field :name, class: 'form-input' %>
-        </div>
-        
-        <div id="file_input" style="display: none;">
-          <%= form.label :file, "Select File:", class: 'form-label' %>
-        </div>
-        <div id="file_input_label" style="display: none;">
-          <%= form.file_field :file, class: 'form-input' %>
+        <div class='form-input' id="file_input" style="display: none;">
+          <%= file_field_tag :file %>
         </div>
 
-        <%= form.label :algorithm, "Cipher Algorithm:", class: 'form-label' %>
-        <%= form.select :algorithm, options_for_select(['Vigenere Cipher', 'Auto-Key Vigenere Cipher', 'Extended Vigenere Cipher', 'Playfair Cipher', 'Affine Cipher', 'Hill Cipher', 'Super Encryption', 'Enigma Cipher']), {}, class: 'form-select' %>
+        <div class='form-label'>
+          <%= label_tag :algorithm, "Cipher Algorithm:" %>
+        </div>
+        <div class='form-select'>
+          <%= select_tag :algorithm, options_for_select([
+          ['Vigenere Cipher', 'vigenere'], 
+          ['Auto-Key Vigenere Cipher', 'auto_key_vigenere'], 
+          ['Extended Vigenere Cipher', 'extended_vigenere'], 
+          ['Playfair Cipher', 'playfair'], 
+          ['Affine Cipher', 'affine'], 
+          ['Hill Cipher', 'hill'], 
+          ['Super Encryption', 'super_encryption'], 
+          ['Enigma Cipher', 'enigma']
+          ], selected: params[:algorithm]), class: 'form-select' %>
+        </div>
 
-        <%= form.label :name, "Key:", class: 'form-label' %>
-        <%= form.text_field :name, class: 'form-input' %>
-
+        <div class='form-label'>
+        <%= label_tag :encryption_key, "Key:", class: 'form-label' %>
+        </div>
+        <div class='form-input' id="file_input">
+        <%= text_field_tag :encryption_key %>
+        </div>
       </div>
 
       <div class='button-container'>
-        <%= form.submit "Encrypt", id:"encrypt", class: 'encrypt-button' %>
-        <%= form.submit "Decrypt", id:"decrypt", class: 'decrypt-button' %>
+        <%= submit_tag "Encrypt", id:"encrypt", class: 'encrypt-button' %>
+        <%# <%= form.submit "Decrypt", id:"decrypt", class: 'decrypt-button', style: "display: none;" %>
       </div>
 
-    </div>
+      <% if @encrypted_text %>
+        <div class='result-container'>
+          <label class="form-label">Encrypted Text:</label>
+          <textarea class="form-input" readonly><%= @encrypted_text %></textarea>
+        </div>
+      <% end %>
 
+    </div>
   </div>
 
   <footer>
@@ -61,5 +83,4 @@
   </footer>
 
 </div> 
-
 <% end %>

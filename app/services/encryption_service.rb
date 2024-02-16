@@ -1,10 +1,19 @@
-# app/services/encryption_service.rb
 class EncryptionService
-  def initialize(file_path)
-    @file_path = file_path
-  end
+  ALGORITHMS = {
+    vigenere: 'Vigenere Cipher',
+  }.freeze
 
-  def encrypt
-    raise NotImplementedError, "This #{self.class} cannot respond to:"
+  def self.encrypt(text, algorithm_key, key = nil)
+    algorithm = ALGORITHMS[algorithm_key.to_sym]
+
+    case algorithm
+    when ALGORITHMS[:vigenere]
+      result = "test"
+      result.concat(text)
+      result.concat(key)
+      result
+    else
+      nil
+    end
   end
 end

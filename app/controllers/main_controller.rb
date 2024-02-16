@@ -1,5 +1,5 @@
 class MainController < ApplicationController
   def show
-    @encrypted_file = EncryptedFile.new
+    @encrypted_text = session.delete(:encrypted_text) # This also clears it after retrieval
   end
 end

@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("turbo:load", function () {
-  var inputTypeSelect = document.getElementById("encrypted_file_input_type");
+  var inputTypeSelect = document.getElementById("input_type");
   var textInput = document.getElementById("text_input");
   var textInputLabel = document.getElementById("text_input_label");
   var fileInput = document.getElementById("file_input");
