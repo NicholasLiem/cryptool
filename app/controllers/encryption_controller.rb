@@ -1,4 +1,4 @@
-class EncryptedFilesController < ApplicationController
+class EncryptionController < ApplicationController
   def encrypt_text
     # Extract parameters
     # input_type = params[:input_type]
