@@ -7,28 +7,17 @@ class EncryptedFilesController < ApplicationController
 
     # Encrypt the text
     encrypted_text = EncryptionService.encrypt(plain_text, algorithm, key)
+    handle_encryption_result(encrypted_text)
+  end
 
-    if encrypted_text
-      session[:encrypted_text] = encrypted_text
+  def handle_encryption_result(encrypted_data)
+    if encrypted_data
+      session[:encrypted_text] = encrypted_data
       redirect_to main_page_path
     else
       flash[:alert] = "Encryption failed."
       redirect_to main_page_path
     end
-  end
-
-  def encrypt_file
-    # @encrypted_file = EncryptedFile.new(encrypted_file_params)
-
-    # if @encrypted_file.save
-    #   if params[:algorithm] == 'AES'
-    #     service = ExampleEncryptionService.new(@encrypted_file.file_path)
-    #     service.encrypt
-    #   end
-    #   redirect_to some_path, notice: "File uploaded and encrypted successfully."
-    # else
-    #   render :new
-    # end
   end
 
   def download
@@ -40,11 +29,5 @@ class EncryptedFilesController < ApplicationController
     else
       head :not_found
     end
-  end
-
-  private
-
-  def encrypted_file_params
-    params.require(:encrypted_file).permit(:name, :file, :algorithm)
   end
 end
