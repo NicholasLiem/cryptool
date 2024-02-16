@@ -3,7 +3,13 @@ class EncryptedFilesController < ApplicationController
     @encrypted_file = EncryptedFile.new
   end
 
-  def upload
+  def encrypt_text
+    # TODO: Implement this
+    # Algorithm selector switch case, based on the algorithm
+    # Parse all into bytes and then encrypt
+  end
+
+  def encrypt_file
     @encrypted_file = EncryptedFile.new(encrypted_file_params)
 
     if @encrypted_file.save
