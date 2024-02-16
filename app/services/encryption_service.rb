@@ -1,4 +1,9 @@
 class EncryptionService
+  FILE_TYPE = {
+    text: 'Text',
+    binary: 'Binary File'
+  }.freeze
+
   ALGORITHMS = {
     vigenere: 'Vigenere Cipher',
   }.freeze
