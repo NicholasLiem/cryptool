@@ -1,15 +1,25 @@
 class EncryptedFilesController < ApplicationController
   def encrypt_text
     # Extract parameters
+    # input_type = params[:input_type]
     plain_text = params[:plain_text]
-    algorithm = params[:algorithm]
+    algorithm_key = params[:algorithm].to_sym
     key = params[:encryption_key]
 
     # Encrypt the text
-    encrypted_text = EncryptionService.encrypt(plain_text, algorithm, key)
+    encryption_service = choose_service(algorithm_key)
+    encrypted_text = encryption_service.encrypt_data(plain_text, key) if encryption_service
     handle_encryption_result(encrypted_text)
   end
 
+  def choose_service(algorithm_key)
+    case algorithm_key
+      when :vigenere
+        VigenereCipher.new
+      else
+        nil
+    end
+  end
   def handle_encryption_result(encrypted_data)
     if encrypted_data
       session[:encrypted_text] = encrypted_data
