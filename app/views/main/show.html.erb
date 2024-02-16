@@ -16,14 +16,17 @@
     </div>
     
     <div class='form-container'>
-      <div class='grid-container'>
 
-        <div class='form-label' id="input_type_select_label">
-          <%= label_tag :input_type, "Input Type:" %>
+      <div class='grid-container'>
+        <%= label_tag :input_type, "Input Type:", id:"input_type_select_label", class:'form-label'%>
+        <%= select_tag :input_type, options_for_select(['Text', 'Binary File'], selected: params[:input_type]), class:'form-select', id:"input_type_select" %>
+
+        <div id='text_input_label' style="display:none"> 
+          <%= label_tag :plain_text, "Input Text:", class:'form-label', id:"text_input_label" %>
         </div>
-        <div class='form-select' id="input_type_select">
-          <%= select_tag :input_type, options_for_select(['Text', 'Binary File'], selected: params[:input_type]) %>
-        </div>
+        <%= text_field_tag :plain_text, params[:plain_text], id:"text_input", class:"form-input" %>
+
+
 
         <div class='form-label' id="text_input_label" style="display: none;">
           <%= label_tag :plain_text, "Input Text:" %>
@@ -39,11 +42,8 @@
           <%= file_field_tag :file %>
         </div>
 
-        <div class='form-label'>
-          <%= label_tag :algorithm, "Cipher Algorithm:" %>
-        </div>
-        <div class='form-select'>
-          <%= select_tag :algorithm, options_for_select([
+        <%= label_tag :algorithm, "Cipher Algorithm:", class:'form-label' %>
+        <%= select_tag :algorithm, options_for_select([
           ['Vigenere Cipher', 'vigenere'], 
           ['Auto-Key Vigenere Cipher', 'auto_key_vigenere'], 
           ['Extended Vigenere Cipher', 'extended_vigenere'], 
@@ -53,19 +53,14 @@
           ['Super Encryption', 'super_encryption'], 
           ['Enigma Cipher', 'enigma']
           ], selected: params[:algorithm]), class: 'form-select' %>
-        </div>
 
-        <div class='form-label'>
         <%= label_tag :encryption_key, "Key:", class: 'form-label' %>
-        </div>
-        <div class='form-input' id="file_input">
-        <%= text_field_tag :encryption_key %>
-        </div>
+        <%= text_field_tag :encryption_key, params[:encryption_key], id:'file_input', class:'form-input' %>
       </div>
 
       <div class='button-container'>
         <%= submit_tag "Encrypt", id:"encrypt", class: 'encrypt-button' %>
-        <%# <%= form.submit "Decrypt", id:"decrypt", class: 'decrypt-button', style: "display: none;" %>
+        <%= form.submit "Decrypt", id:"decrypt", class: 'decrypt-button' %>
       </div>
 
       <% if @encrypted_text %>

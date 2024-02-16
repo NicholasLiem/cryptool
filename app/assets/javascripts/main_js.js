@@ -14,6 +14,7 @@ document.addEventListener("turbo:load", function () {
   var fileInputLabel = document.getElementById("file_input_label");
 
   inputTypeSelect.addEventListener("change", function () {
+    console.log(this.value)
     if (this.value === "Text") {
       textInput.style.display = "block";
       textInputLabel.style.display = "block";

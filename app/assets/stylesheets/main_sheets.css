@@ -5,6 +5,7 @@ body {
 .form-label {
   padding: 10px 20px;
   font-weight: bold;
+  display: flex;
 }
   
 .form-input {
@@ -12,12 +13,13 @@ body {
   min-height: 50px;
   max-height: 200px;
   cursor: pointer;
+  overflow: auto;
 }
 
 .form-select {
   padding: 10px 20px;
   cursor: pointer;
-
+  width: 300px;
 }
 
 .page-container {
@@ -72,7 +74,7 @@ body {
 .grid-container {
   width: 100%;
   display: grid;
-  grid-template-columns: 30% 60%;
+  grid-template-columns: auto auto;
   padding: 10px;
   gap: 10px;
   justify-content: space-between;
