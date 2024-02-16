@@ -6,12 +6,16 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-document.addEventListener("turbo:load", function () {
-  var inputTypeSelect = document.getElementById("input_type");
+document.addEventListener("DOMContentLoaded", function () {
+  var inputTypeSelect = document.getElementById("input_type_select");
   var textInput = document.getElementById("text_input");
   var textInputLabel = document.getElementById("text_input_label");
   var fileInput = document.getElementById("file_input");
   var fileInputLabel = document.getElementById("file_input_label");
+
+  if (inputTypeSelect){
+    console.log('test')
+  }
 
   inputTypeSelect.addEventListener("change", function () {
     if (this.value === "Text") {
@@ -26,11 +30,8 @@ document.addEventListener("turbo:load", function () {
       fileInputLabel.style.display = "block";
     }
   });
-
-  if (inputTypeSelect) {
-    inputTypeSelect.dispatchEvent(new Event("change"));
-  }
 });
+
 
 
 document.getElementById("black-overlay").addEventListener("click", function () {
