@@ -19,7 +19,6 @@ body {
 .form-select {
   padding: 10px 20px;
   cursor: pointer;
-  width: 300px;
 }
 
 .page-container {
@@ -80,7 +79,7 @@ body {
 .grid-container {
   width: 100%;
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: 20% 80%;
   padding: 10px;
   gap: 10px;
   justify-content: space-between;

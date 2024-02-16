@@ -8,8 +8,25 @@ class EncryptionController < ApplicationController
 
     # Encrypt the text
     encryption_service = choose_service(algorithm_key)
+
+    # Go through preparation
+    plain_text = prepare_text(plain_text)
+    key = prepare_key(key)
+
     encrypted_text = encryption_service.encrypt_data(plain_text, key) if encryption_service
     handle_encryption_result(encrypted_text)
+  end
+
+  def prepare_text(text)
+    # replace " " to "" and upcase
+    text = text.gsub(" ", "").upcase
+    return text
+  end
+
+  def prepare_key(key)
+    # replace " " to "" and upcase
+    key = key.gsub(" ", "").upcase
+    return key
   end
 
   def choose_service(algorithm_key)
