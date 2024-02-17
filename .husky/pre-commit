@@ -1,4 +1,5 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-bundle exec rspec && bundle exec rubocop
+bundle exec rspec && git diff --name-only --staged --diff-filter=d -- '*.rb' ':!vendor' ':!db/schema.rb' | xargs -r bundle exec rubocop -A
+
