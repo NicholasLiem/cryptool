@@ -8,11 +8,9 @@ class VigenereCipher < EncryptionService
 
     result = ""
     key_idx = 0
-    for i in 0..(plain_text_length - 1)
+    (0..(plain_text_length - 1)).each do |i|
       # Reset if it reaches max
-      if key_idx == key_length
-        key_idx = 0
-      end
+      key_idx = 0 if key_idx == key_length
 
       temp_char = plain_text[i]
       key_char = key[key_idx]
@@ -23,7 +21,7 @@ class VigenereCipher < EncryptionService
         key_int = key_char.ord - 65
 
         # NewChar int
-        cipher_int = (plain_int + key_int) % 26 + 65
+        cipher_int = ((plain_int + key_int) % 26) + 65
         cipher_char = cipher_int.chr
 
         # Add to result
@@ -47,11 +45,9 @@ class VigenereCipher < EncryptionService
 
     result = ""
     key_idx = 0
-    for i in 0..(cipher_text_length - 1)
+    (0..(cipher_text_length - 1)).each do |i|
       # Reset if it reaches max
-      if key_idx == key_length
-        key_idx = 0
-      end
+      key_idx = 0 if key_idx == key_length
 
       temp_char = cipher_text[i]
       key_char = key[key_idx]
@@ -62,7 +58,7 @@ class VigenereCipher < EncryptionService
         key_int = key_char.ord - 65
 
         # NewChar int
-        plain_int = (cipher_int - key_int) % 26 + 65
+        plain_int = ((cipher_int - key_int) % 26) + 65
         plain_char = plain_int.chr
 
         # Add to result

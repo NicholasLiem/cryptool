@@ -1,0 +1,14 @@
+{
+  "name": "cryptool",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com-NicholasLiem:NicholasLiem/cryptool.git",
+  "author": "Nicholas Liem <13521135@std.stei.itb.ac.id>",
+  "license": "MIT",
+  "scripts": {
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "husky": "^9.0.11"
+  }
+}

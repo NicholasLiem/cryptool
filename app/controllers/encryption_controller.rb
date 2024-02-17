@@ -21,21 +21,18 @@ class EncryptionController < ApplicationController
 
   def choose_service(algorithm_key)
     case algorithm_key
-      when :vigenere
-        VigenereCipher.new
-      else
-        nil
+    when :vigenere
+      VigenereCipher.new
     end
   end
 
   def handle_encryption_result(encrypted_data)
     if encrypted_data
       session[:encrypted_text] = encrypted_data
-      redirect_to main_page_path
     else
       flash[:alert] = "Encryption failed."
-      redirect_to main_page_path
     end
+    redirect_to main_page_path
   end
 
   def download
