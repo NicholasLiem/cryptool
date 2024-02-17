@@ -12,6 +12,7 @@ module Ciphers
     end
 
     def encrypt_data(data, key)
+      key = key.gsub('-',' ')
       keys = key.split
 
       return "Not Integer Keys Detected" unless Utils.is_integer(keys[0]) && Utils.is_integer(keys[1])
@@ -40,6 +41,7 @@ module Ciphers
     end
 
     def decrypt_data(data, key)
+      key = key.gsub('-',' ')
       keys = key.split
 
       return "Not Integer Keys Detected" unless Utils.is_integer(keys[0]) && Utils.is_integer(keys[1])

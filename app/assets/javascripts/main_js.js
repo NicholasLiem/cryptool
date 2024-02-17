@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log(this.value);
     if (this.value === "affine") {
       document.getElementById("hint").innerHTML =
-        "First key and second key need to be seperated by a space (' '). Example: 2 5";
+        "First key and second key need to be seperated by a hyphen ('-'). Example: 2-5";
     } else {
       document.getElementById("hint").innerHTML = " ";
     }
