@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe VigenereCipher do
-  let(:cipher_alg) { VigenereCipher.new }
+RSpec.describe Ciphers::VigenereCipher do
+  let(:cipher_alg) { described_class.new }
 
   describe '#encrypt_data and #decrypt_data' do
     [

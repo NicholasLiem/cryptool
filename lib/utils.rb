@@ -13,6 +13,20 @@ module Utils
     case algorithm_key
     when :vigenere
       VigenereCipher.new
+    when :auto_key_vigenere
+      AutoKeyVigenereCipher.new
+    when :extended_vigenere
+      ExtendedVigenereCipher.new
+    when :playfair
+      PlayfairCipher.new
+    when :affine
+      AffineCipher.new
+    when :hill
+      HillCipher.new
+    when :super_encryption
+      SuperEncryptionCipher.new
+    when :enigma
+      EnigmaCipher.new
     end
   end
 end
