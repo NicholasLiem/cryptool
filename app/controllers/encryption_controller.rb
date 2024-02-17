@@ -20,7 +20,7 @@ class EncryptionController < ApplicationController
     encrypted_text = encryption_service.encrypt_data(plain_text, key) if encryption_service
     encoded_encrypted_text = Utils.encode_to_base64(encrypted_text)
 
-    handle_encryption_result(params[:algorithm], plain_text, key, encrypted_text, encoded_encrypted_text, encryption_service)
+    handle_encryption_result(params[:algorithm], plain_text, key, encrypted_text, encoded_encrypted_text)
   end
 
   def handle_encryption_result(cipher_name,
