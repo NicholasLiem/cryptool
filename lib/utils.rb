@@ -1,8 +1,14 @@
+require 'base64'
+
 module Utils
   module_function
 
   def is_integer(char)
     char.to_i.to_s == char
+  end
+
+  def sanitize_text_ascii(text)
+    text.gsub(" ", "").upcase.encode('ASCII', fallback: '?')
   end
 
   def sanitize_text(text)
@@ -11,6 +17,14 @@ module Utils
 
   def is_letter_and_upcase(char)
     char.ord >= 65 && char.ord <= 90
+  end
+
+  def encode_to_base64(text)
+    Base64.encode64(text)
+  end
+
+  def decode_from_base64(text)
+    Base64.decode64(text)
   end
 
   def choose_service(algorithm_key)

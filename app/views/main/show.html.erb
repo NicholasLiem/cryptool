@@ -54,7 +54,7 @@
       <div class='button-container'>
         <%= submit_tag "Encrypt", id:"encrypt", class: 'encrypt-button' %>
         <%= form.submit "Decrypt", id:"decrypt", class: 'decrypt-button' %>
-        <%= button_tag "Show Last Result", id:"result", class: 'result-button' %>
+        <button id='result' class='result-button'> Show Last Result </button>
       </div>
 
     </div>
@@ -66,13 +66,18 @@
 
 </div> 
 
-<% if @result_text %>
+<% if @result_text || @encoded_result_text %>
   <div class='popup-container' id='popup'>
     <div class='black-overlay' id='black-overlay'></div>
 
     <div class='result-container'>
-      <label class="subtitle"> Cipher Result </label>
+      <h3 class="subtitle"> Cipher Result </h3>
+      
+      <p> Actual Result: </p>
       <textarea class="result-text-area" readonly><%= @result_text %></textarea>
+
+      <p> Encoded to Base64 Result: </p>
+      <textarea class="result-text-area" readonly><%= @encoded_result_text %></textarea>
     </div>
   </div>
 <% end %>

@@ -18,25 +18,18 @@ module Ciphers
         temp_char = plain_text[i]
         key_char = key[key_idx]
 
-        # Check if it is a letter and upcase
-        if Utils.is_letter_and_upcase(temp_char)
-          plain_int = temp_char.ord
-          key_int = key_char.ord
+        plain_int = temp_char.ord
+        key_int = key_char.ord
 
-          # NewChar int
-          cipher_int = ((plain_int + key_int) % TOTAL_ASCII)
-          cipher_char = cipher_int.chr
+        # NewChar int
+        cipher_int = ((plain_int + key_int) % TOTAL_ASCII)
+        cipher_char = cipher_int.chr
 
-          # Add to result
-          result += cipher_char
+        # Add to result
+        result += cipher_char
 
-          # Increment
-          key_idx += 1
-
-        # If not, leave it as it is
-        else
-          result += temp_char
-        end
+        # Increment
+        key_idx += 1
       end
       result
     end
@@ -55,25 +48,19 @@ module Ciphers
         temp_char = cipher_text[i]
         key_char = key[key_idx]
 
-        # Check if it is a letter and upcase
-        if Utils.is_letter_and_upcase(temp_char)
-          cipher_int = temp_char.ord
-          key_int = key_char.ord
+        cipher_int = temp_char.ord
+        key_int = key_char.ord
 
-          # NewChar int
-          plain_int = ((cipher_int - key_int) % TOTAL_ASCII)
-          plain_char = plain_int.chr
+        # NewChar int
+        plain_int = ((cipher_int - key_int) % TOTAL_ASCII)
+        plain_char = plain_int.chr
 
-          # Add to result
-          result += plain_char
+        # Add to result
+        result += plain_char
 
-          # Increment
-          key_idx += 1
+        # Increment
+        key_idx += 1
 
-        # If not, leave it as it is
-        else
-          result += temp_char
-        end
       end
       result
     end

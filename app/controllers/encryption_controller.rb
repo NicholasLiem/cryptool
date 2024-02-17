@@ -12,16 +12,19 @@ class EncryptionController < ApplicationController
     encryption_service = Utils.choose_service(algorithm_key)
 
     # Go through preparation
-    plain_text = encryption_service == Ciphers::ExtendedVigenereCipher.new ? input_text : Utils.sanitize_text(input_text)
+    plain_text = encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher)? input_text : Utils.sanitize_text(input_text)
     key = Utils.sanitize_text(key) unless Ciphers::ExtendedVigenereCipher.new
 
     encrypted_text = encryption_service.encrypt_data(plain_text, key) if encryption_service
-    handle_encryption_result(encrypted_text)
+    encoded_encrypted_text = Utils.encode_to_base64(encrypted_text)
+    handle_encryption_result(encrypted_text, encoded_encrypted_text)
   end
 
-  def handle_encryption_result(encrypted_data)
+  def handle_encryption_result(encrypted_data, encoded_encrypted_text)
     if encrypted_data
       session[:result_text] = encrypted_data
+      session[:encoded_result_text] = encoded_encrypted_text
+      puts session[:encoded_result_text]
     else
       flash[:alert] = "Encryption failed."
     end

@@ -28,28 +28,52 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-
 document.addEventListener("DOMContentLoaded", function () {
   var algorithmSelect = document.getElementById("algorithm-select");
 
-
   algorithmSelect.addEventListener("change", function () {
-  console.log(this.value)
+    console.log(this.value);
     if (this.value === "affine") {
-      document.getElementById('hint').innerHTML = 'First key and second key need to be seperated by a space (\' \'). Example: 2 5' ;
+      document.getElementById("hint").innerHTML =
+        "First key and second key need to be seperated by a space (' '). Example: 2 5";
     } else {
-      document.getElementById('hint').innerHTML = ' ';
+      document.getElementById("hint").innerHTML = " ";
     }
   });
 });
 
+var blackoverlay = document.getElementById("black-overlay");
+var popup = document.getElementById("popup");
+function closePopup() {
+  popup.style.display = "none";
+  console.log("tutup");
+}
+blackoverlay.addEventListener("click", closePopup);
 
-
-document.getElementById("black-overlay").addEventListener("click", function () {
-  document.getElementById('popup').style.display = "none";
+document.addEventListener("DOMContentLoaded", function () {
+  var result = document.getElementById("result");
+  var popup = document.getElementById("popup");
+  var encrypt = document.getElementById('encrypt')
+  var decrypt = document.getElementById('decrypt')
+  function openPopup() {
+    event.preventDefault()
+    popup.style.display = "flex";
+    console.log("buka");
+  }
+  function openPopupSubmit(){
+    popup.style.display = "flex";
+    console.log("buka");
+  }
+  result.addEventListener("click", openPopup);
 });
 
-document.getElementById("result").addEventListener("click", function (){
-  document.getElementById('popup').style.display = "flex";
-})
+// var popup = document.getElementById('popup')
+// var encrypt = document.getElementById('encrypt')
+// var decrypt = document.getElementById('decrypt')
+// result.addEventListener("click", openPopup);
+// encrypt.addEventListener("click", openPopup);
+// decrypt.addEventListener("click", openPopup);
 
+// function openPopup(){
+//   popup.style.display = "flex";
+// }

@@ -232,7 +232,6 @@ footer {
   transform: translateY(0);
 }
 
-
 .popup-container {
   width: 100vw;
   height: 100vh;
@@ -268,7 +267,7 @@ footer {
 }
 
 .result-text-area {
-  min-width: 200px;
-  min-height: 75px;
+  min-width: 400px;
+  min-height: 100px;
   overflow: auto;
 }
