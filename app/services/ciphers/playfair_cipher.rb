@@ -14,12 +14,30 @@ module Ciphers
       encrypt(data_bigram, key_square)
     end
 
-    def encrypt(_data_bigram, _key_square)
-      ""
-      # Iterate
-      # Check if bigram is in the same row
-      # Check if bigram is in the same col
-      # Last: not in the same row or col
+    def encrypt(data_bigram, key_square) # rubocop:disable Metrics/AbcSize
+      result = ""
+      data_bigram.each do |item|
+        first_char = item[0]
+        second_char = item[1]
+
+        first_char_index = find_index_matrix(key_square, first_char)
+        second_char_index = find_index_matrix(key_square, second_char)
+
+        if first_char_index[0] == second_char_index[0]
+          # Take next col
+          result += key_square[first_char_index[0]][(first_char_index[1] + 1) % 5]
+          result += key_square[second_char_index[0]][(second_char_index[1] + 1) % 5]
+        elsif first_char_index[1] == second_char_index[1]
+          # Take next row
+          result += key_square[(first_char_index[0] + 1) % 5][first_char_index[1]]
+          result += key_square[(second_char_index[0] + 1) % 5][second_char_index[1]]
+        else
+          # Take reciprocal
+          result += key_square[first_char_index[0]][second_char_index[1]]
+          result += key_square[second_char_index[0]][first_char_index[1]]
+        end
+      end
+      result
     end
 
     # def decrypt(key_square, char_pair)
