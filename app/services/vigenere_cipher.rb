@@ -18,7 +18,7 @@ class VigenereCipher < EncryptionService
       key_char = key[key_idx]
 
       # Check if it is a letter and upcase
-      if Utils.is_letter_and_upcase(temp_char) # Assuming you have this method defined in Utils module
+      if Utils.is_letter_and_upcase(temp_char)
         plain_int = temp_char.ord - 65
         key_int = key_char.ord - 65
 
@@ -57,7 +57,7 @@ class VigenereCipher < EncryptionService
       key_char = key[key_idx]
 
       # Check if it is a letter and upcase
-      if is_letter_and_upcase(temp_char) # Make sure this method name is corrected and matches the method's actual name, possibly Utils.is_letter_and_upcase(temp_char)
+      if Utils.is_letter_and_upcase(temp_char)
         cipher_int = temp_char.ord - 65
         key_int = key_char.ord - 65
 

@@ -1,13 +1,11 @@
 module Utils
-  extend ActiveSupport::Concern
+  module_function
 
-  class_methods do
-    def sanitize_text(text)
-      text.gsub(" ", "").upcase
-    end
+  def sanitize_text(text)
+    text.gsub(" ", "").upcase
+  end
 
-    def is_letter_and_upcase(char)
-      c.ord >= 65 && c.ord <= 90
-    end
+  def is_letter_and_upcase(char)
+    char.ord >= 65 && char.ord <= 90
   end
 end
