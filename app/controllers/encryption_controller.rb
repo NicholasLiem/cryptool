@@ -12,8 +12,8 @@ class EncryptionController < ApplicationController
     encryption_service = Utils.choose_service(algorithm_key)
 
     # Go through preparation
-    plain_text = Utils.sanitize_text(input_text)
-    key = Utils.sanitize_text(key)
+    plain_text = encryption_service == Ciphers::ExtendedVigenereCipher.new ? input_text : Utils.sanitize_text(input_text)
+    key = Utils.sanitize_text(key) unless Ciphers::ExtendedVigenereCipher.new
 
     encrypted_text = encryption_service.encrypt_data(plain_text, key) if encryption_service
     handle_encryption_result(encrypted_text)
