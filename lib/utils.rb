@@ -33,4 +33,12 @@ module Utils
       Ciphers::EnigmaCipher.new
     end
   end
+
+  def find_index_matrix(matrix, target)
+    matrix.each_with_index do |row, i|
+      row.each_with_index do |element, j|
+        return [i, j] if element == target
+      end
+    end
+  end
 end
