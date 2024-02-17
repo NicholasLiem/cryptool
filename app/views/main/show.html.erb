@@ -9,7 +9,7 @@
 
   <div class='content-container'>
     <div class='asset-container'>
-      <%= image_tag 'toothless.gif', width:"350px" %>
+      <%= image_tag 'toothless.gif', width:"300px" %>
       <audio src="<%= audio_path 'driftveil_city.mp3'%>" id="music" type="audio/mpeg" controls>
         Your browser does not support the audio element.
       </audio>
@@ -42,7 +42,10 @@
           ['Hill Cipher', 'hill'], 
           ['Super Encryption', 'super_encryption'], 
           ['Enigma Cipher', 'enigma']
-          ], selected: params[:algorithm]), class: 'form-select' %>
+          ], selected: params[:algorithm]), class: 'form-select', id: 'algorithm-select' %>
+        
+        <div></div>
+        <div id='hint'> </div>
 
         <%= label_tag :encryption_key, "Key:", class: 'form-label' %>
         <%= text_field_tag :encryption_key, params[:encryption_key], id:'file_input', class:'form-input' %>

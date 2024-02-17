@@ -1,6 +1,10 @@
 module Utils
   module_function
 
+  def is_integer(char)
+    char.to_i.to_s == char
+  end
+
   def sanitize_text(text)
     text.gsub(" ", "").upcase.encode('UTF-8')
   end

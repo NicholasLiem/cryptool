@@ -2,6 +2,8 @@ module Ciphers
   class ExtendedVigenereCipher < EncryptionService
     include Utils
 
+    TOTAL_ASCII = 256
+
     def encrypt_data(data, key)
       plain_text = data
       plain_text_length = plain_text.length
@@ -22,7 +24,7 @@ module Ciphers
           key_int = key_char.ord
 
           # NewChar int
-          cipher_int = ((plain_int + key_int) % 256)
+          cipher_int = ((plain_int + key_int) % TOTAL_ASCII)
           cipher_char = cipher_int.chr
 
           # Add to result
@@ -59,7 +61,7 @@ module Ciphers
           key_int = key_char.ord
 
           # NewChar int
-          plain_int = ((cipher_int - key_int) % 256)
+          plain_int = ((cipher_int - key_int) % TOTAL_ASCII)
           plain_char = plain_int.chr
 
           # Add to result

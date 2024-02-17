@@ -2,6 +2,9 @@ module Ciphers
   class VigenereCipher < EncryptionService
     include Utils
 
+    BASE = 'A'.ord
+    ALPHABET_LENGTH = 26
+
     def encrypt_data(data, key)
       plain_text = data
       plain_text_length = plain_text.length
@@ -18,11 +21,11 @@ module Ciphers
 
         # Check if it is a letter and upcase
         if Utils.is_letter_and_upcase(temp_char)
-          plain_int = temp_char.ord - 65
-          key_int = key_char.ord - 65
+          plain_int = temp_char.ord - BASE
+          key_int = key_char.ord - BASE
 
           # NewChar int
-          cipher_int = ((plain_int + key_int) % 26) + 65
+          cipher_int = ((plain_int + key_int) % ALPHABET_LENGTH) + BASE
           cipher_char = cipher_int.chr
 
           # Add to result
@@ -55,11 +58,11 @@ module Ciphers
 
         # Check if it is a letter and upcase
         if Utils.is_letter_and_upcase(temp_char)
-          cipher_int = temp_char.ord - 65
-          key_int = key_char.ord - 65
+          cipher_int = temp_char.ord - BASE
+          key_int = key_char.ord - BASE
 
           # NewChar int
-          plain_int = ((cipher_int - key_int) % 26) + 65
+          plain_int = ((cipher_int - key_int) % ALPHABET_LENGTH) + BASE
           plain_char = plain_int.chr
 
           # Add to result
