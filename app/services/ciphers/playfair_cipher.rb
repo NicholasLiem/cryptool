@@ -89,6 +89,7 @@ module Ciphers
     end
 
     def preprocess_cipher_text(text)
+      # Asumption that the cipher text is always even.
       bigrams = []
       i = 0
       while i < text.length
