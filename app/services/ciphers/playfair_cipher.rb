@@ -14,13 +14,12 @@ module Ciphers
       encrypt(data_bigram, key_square)
     end
 
-    def encrypt(data_bigram, key_square)
-      result = ""
+    def encrypt(_data_bigram, _key_square)
+      ""
       # Iterate
       # Check if bigram is in the same row
       # Check if bigram is in the same col
       # Last: not in the same row or col
-      result
     end
 
     # def decrypt(key_square, char_pair)
