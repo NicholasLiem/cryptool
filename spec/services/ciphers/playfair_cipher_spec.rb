@@ -11,8 +11,8 @@ RSpec.describe Ciphers::PlayfairCipher do
         it 'correctly encrypts and decrypts' do
           encrypted = cipher_alg.encrypt_data(test_case[:plain_text], test_case[:key])
           expect(encrypted).to eq(test_case[:cipher_text])
-          # decrypted = cipher_alg.decrypt_data(test_case[:cipher_text], test_case[:key])
-          # expect(decrypted).to eq(test_case[:plain_text])
+          decrypted = cipher_alg.decrypt_data(test_case[:cipher_text], test_case[:key])
+          expect(decrypted).to eq(test_case[:plain_text])
         end
       end
     end
@@ -54,14 +54,18 @@ RSpec.describe Ciphers::PlayfairCipher do
     end
   end
 
-  describe '#slice_text_to_bigram' do
+  describe '#preprocess_plain_text' do
     it 'handles single characters' do
-      expect(cipher_alg.slice_text_to_bigram('A')).to eq(%w[AX])
+      expect(cipher_alg.preprocess_plain_text('A')).to eq(%w[AX])
     end
 
     it 'handles normal text' do
-      expect(cipher_alg.slice_text_to_bigram('HELLOWORLD')).to eq(%w[HE LX LO WO RL DX])
-      expect(cipher_alg.slice_text_to_bigram('TEMUIIBUNANTIMALAM')).to eq(%w[TE MU IX IB UN AN TI MA LA MX])
+      expect(cipher_alg.preprocess_plain_text('HELLOWORLD')).to eq(%w[HE LX LO WO RL DX])
+      expect(cipher_alg.preprocess_plain_text('TEMUIIBUNANTIMALAM')).to eq(%w[TE MU IX IB UN AN TI MA LA MX])
+    end
+
+    it 'handles character with J' do
+      expect(cipher_alg.preprocess_plain_text('JJJJ')).to eq(%w[IX IX IX IX])
     end
   end
 end
