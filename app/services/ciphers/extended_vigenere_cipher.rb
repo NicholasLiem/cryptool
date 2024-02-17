@@ -60,7 +60,6 @@ module Ciphers
 
         # Increment
         key_idx += 1
-
       end
       result
     end

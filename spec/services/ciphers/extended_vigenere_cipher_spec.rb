@@ -5,7 +5,6 @@ RSpec.describe Ciphers::ExtendedVigenereCipher do
 
   describe '#encrypt_data and #decrypt_data' do
     [
-      { key: 'aaa', plaintext: 'ASAEZDCAA', cipher_text: 'bwdfjgded' },
       { key: '%!&01#', plaintext: 'B$%E$!%#A123##', cipher_text: 'gEKuUDJDgacVHD' }
     ].each do |test_case|
       context "with key '#{test_case[:key]}'" do

@@ -258,16 +258,22 @@ footer {
 
 .result-container {
   padding: 10px 20px;
-  max-height: 70vh;
+  max-height: 90vh;
   display: flex;
   flex-direction: column;
   background-color: white;
   border: 2px solid;
   border-radius: 15px;
+  overflow: auto;
 }
 
 .result-text-area {
   min-width: 400px;
   min-height: 100px;
   overflow: auto;
+}
+
+.result-input {
+  display: flex;
+  flex-direction: column;
 }

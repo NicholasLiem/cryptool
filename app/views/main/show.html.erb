@@ -71,13 +71,22 @@
     <div class='black-overlay' id='black-overlay'></div>
 
     <div class='result-container'>
-      <h3 class="subtitle"> Cipher Result </h3>
-      
-      <p> Actual Result: </p>
-      <textarea class="result-text-area" readonly><%= @result_text %></textarea>
+      <h3 class="subtitle"> Cipher Result - <%= @cipher_name %> </h3>
 
-      <p> Encoded to Base64 Result: </p>
-      <textarea class="result-text-area" readonly><%= @encoded_result_text %></textarea>
+      <div class='result-input'>
+        <p> Input Text: </br> <%= @input_text %> </p>
+        <p> Key: </br> <%= @key %> </p>
+      </div>
+      
+      <% if @result_text %>
+        <p> Actual Result: </p>
+        <textarea class="result-text-area" readonly><%= @result_text %></textarea>
+      <% end %>
+
+      <% if @encoded_result_text %>
+        <p> Encoded to Base64 Result: </p>
+        <textarea class="result-text-area" readonly><%= @encoded_result_text %></textarea>
+      <% end %>
     </div>
   </div>
 <% end %>
