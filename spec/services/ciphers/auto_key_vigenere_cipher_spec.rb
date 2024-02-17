@@ -6,7 +6,8 @@ RSpec.describe Ciphers::AutoKeyVigenereCipher do
   describe '#encrypt_data and #decrypt_data' do
     [
       { key: 'TESTKEY', plain_text: 'HALOHALOBANDUNG', cipher_text: 'AEDHREJVBLBKUYU' },
-      { key: 'CKIJUT', plain_text: 'MYNAMEISRAHJ', cipher_text: 'OIVJGXUQEATN' }
+      { key: 'CKIJUT', plain_text: 'MYNAMEISRAHJ', cipher_text: 'OIVJGXUQEATN' },
+      { key: 'AA', plain_text: 'AAAA', cipher_text: 'AAAA' }
     ].each do |test_case|
       context "with key '#{test_case[:key]}'" do
         it 'correctly encrypts and decrypts' do

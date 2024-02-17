@@ -37,14 +37,14 @@ module Ciphers
       # Pj = plain text char at index j
       # Ki = key text char at index i
       encrypted_position = (pj_var.ord + ki_var.ord) % ALPHABET_LENGTH
-      (encrypted_position + BASE).chr.encode('UTF-8')
+      (encrypted_position + BASE).chr
     end
 
     def square_decrypt(cj_var, ki_var)
       # Cj = cypher text char at index j
       # Ki = key text char at index i
       decrypted_position = (cj_var.ord - ki_var.ord) % ALPHABET_LENGTH
-      (decrypted_position + BASE).chr.encode('UTF-8')
+      (decrypted_position + BASE).chr
     end
   end
 end
