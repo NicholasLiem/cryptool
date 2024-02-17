@@ -1,5 +1,3 @@
-require 'yaml'
-require 'json'
 require 'matrix'
 
 module Ciphers
