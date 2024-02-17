@@ -12,21 +12,21 @@ module Utils
   def choose_service(algorithm_key)
     case algorithm_key
     when :vigenere
-      VigenereCipher.new
+      Ciphers::VigenereCipher.new
     when :auto_key_vigenere
-      AutoKeyVigenereCipher.new
+      Ciphers::AutoKeyVigenereCipher.new
     when :extended_vigenere
-      ExtendedVigenereCipher.new
+      Ciphers::ExtendedVigenereCipher.new
     when :playfair
-      PlayfairCipher.new
+      Ciphers::PlayfairCipher.new
     when :affine
-      AffineCipher.new
+      Ciphers::AffineCipher.new
     when :hill
-      HillCipher.new
+      Ciphers::HillCipher.new
     when :super_encryption
-      SuperEncryptionCipher.new
+      Ciphers::SuperEncryptionCipher.new
     when :enigma
-      EnigmaCipher.new
+      Ciphers::EnigmaCipher.new
     end
   end
 end
