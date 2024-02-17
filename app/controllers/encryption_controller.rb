@@ -1,4 +1,6 @@
 class EncryptionController < ApplicationController
+  include Utils
+
   def encrypt_text
     # Extract parameters
     # input_type = params[:input_type]
@@ -10,23 +12,11 @@ class EncryptionController < ApplicationController
     encryption_service = choose_service(algorithm_key)
 
     # Go through preparation
-    plain_text = prepare_text(plain_text)
-    key = prepare_key(key)
+    plain_text = Utils.sanitize_text(plain_text)
+    key = Utils.sanitize_text(key)
 
     encrypted_text = encryption_service.encrypt_data(plain_text, key) if encryption_service
     handle_encryption_result(encrypted_text)
-  end
-
-  def prepare_text(text)
-    # replace " " to "" and upcase
-    text = text.gsub(" ", "").upcase
-    return text
-  end
-
-  def prepare_key(key)
-    # replace " " to "" and upcase
-    key = key.gsub(" ", "").upcase
-    return key
   end
 
   def choose_service(algorithm_key)
@@ -37,7 +27,7 @@ class EncryptionController < ApplicationController
         nil
     end
   end
-  
+
   def handle_encryption_result(encrypted_data)
     if encrypted_data
       session[:encrypted_text] = encrypted_data

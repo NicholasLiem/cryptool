@@ -1,92 +1,81 @@
 class VigenereCipher < EncryptionService
+  include Utils
 
-  def isLetterAndUpperCase(c)
-    return c.ord >= 65 && c.ord <= 90
-  end
-  
   def encrypt_data(data, key)
-    plainText = data
-    plainTextLength = plainText.length
-    keyLength = key.length
+    plain_text = data
+    plain_text_length = plain_text.length
+    key_length = key.length
 
     result = ""
-    keyIdx = 0
-    for i in 0..(plainTextLength-1)    
-      # Reset if it achieves max
-      if (keyIdx == keyLength)
-        keyIdx = 0
+    key_idx = 0
+    for i in 0..(plain_text_length - 1)
+      # Reset if it reaches max
+      if key_idx == key_length
+        key_idx = 0
       end
 
-      tempChar = plainText[i]
-      keyChar = key[keyIdx]
+      temp_char = plain_text[i]
+      key_char = key[key_idx]
 
       # Check if it is a letter and upcase
-      if (isLetterAndUpperCase(tempChar))
-        plainInt = tempChar.ord - 65
-        keyInt = keyChar.ord - 65
-
+      if Utils.is_letter_and_upcase(temp_char) # Assuming you have this method defined in Utils module
+        plain_int = temp_char.ord - 65
+        key_int = key_char.ord - 65
 
         # NewChar int
-        cipherInt = (plainInt + keyInt) % 26 + 65
-        cipherChar = cipherInt.chr
+        cipher_int = (plain_int + key_int) % 26 + 65
+        cipher_char = cipher_int.chr
 
         # Add to result
-        result = result + cipherChar
+        result += cipher_char
 
         # Increment
-        keyIdx = keyIdx + 1
-      
+        key_idx += 1
+
       # If not, leave it as it is
       else
-        result = result + tempChar
+        result += temp_char
       end
     end
-    return result
+    result
   end
 
   def decrypt_data(data, key)
-    cipherText = data
-    cipherTextLength = cipherText.length
-    keyLength = key.length
-  
+    cipher_text = data
+    cipher_text_length = cipher_text.length
+    key_length = key.length
+
     result = ""
-    keyIdx = 0
-    for i in 0..(cipherTextLength-1)    
-      # Reset if it achieves max
-      if (keyIdx == keyLength)
-        keyIdx = 0
+    key_idx = 0
+    for i in 0..(cipher_text_length - 1)
+      # Reset if it reaches max
+      if key_idx == key_length
+        key_idx = 0
       end
-  
-      tempChar = cipherText[i]
-      keyChar = key[keyIdx]
-  
+
+      temp_char = cipher_text[i]
+      key_char = key[key_idx]
+
       # Check if it is a letter and upcase
-      if (isLetterAndUpperCase(tempChar))
-        cipherInt = tempChar.ord - 65
-        keyInt = keyChar.ord - 65
-  
-  
+      if is_letter_and_upcase(temp_char) # Make sure this method name is corrected and matches the method's actual name, possibly Utils.is_letter_and_upcase(temp_char)
+        cipher_int = temp_char.ord - 65
+        key_int = key_char.ord - 65
+
         # NewChar int
-        plainInt = (cipherInt - keyInt) % 26 + 65
-        plainChar = plainInt.chr
-  
+        plain_int = (cipher_int - key_int) % 26 + 65
+        plain_char = plain_int.chr
+
         # Add to result
-        result = result + plainChar
-  
+        result += plain_char
+
         # Increment
-        keyIdx = keyIdx + 1
-      
+        key_idx += 1
+
       # If not, leave it as it is
       else
-        result = result + tempChar
+        result += temp_char
       end
     end
-    return result
+    result
   end
 end
-
-
-# key = "selat sunda"
-# str = "Dinas Pendidikan Kota Ternate meminta kepada pihak sekolah dan orang tua siswa untuk jenjang pendidikan SD dan SMP se-Kota Ternate untuk melarang para siswa membawa permainan lato-lato yang sedang tren itu ke sekolah, karena akan mengganggu kegiatan belajar mengajar yang dinilai berbahaya sehingga mengantisipasi kecelakaan bagi anak di daerah itu"
-# Dinas Pendidikan Kota Ternate meminta kepada pihak sekolah dan orang tua siswa untuk jenjang pendidikan SD dan SMP se-Kota Ternate untuk melarang para siswa membawa permainan lato-lato yang sedang tren itu ke sekolah, karena akan mengganggu kegiatan belajar mengajar yang dinilai berbahaya sehingga mengantisipasi kecelakaan bagi anak di daerah itu
-# cip = "VMYAL HYAGIVMVAG CIGD TWVYAMW GRPIFXL KXHUQD PALLK LWEBOAZ HLN HJUAJ TME DILOU HQTMO UEGBUAJ PWROIWAENQ SV HLN LEJ FH-KGXL TXJHNWE MREUD EYYDRSRR PTJU FLSOE XEFTUJD PWVXABFUA OALS-WAMG SNQG KIOAGY NEHN AXF KX KYXRLSL, VAKWHN DKSR XEGYANQGYY VEZAUGDN TIWACSL ZHNYEUAK QUAJ DARTLTA VRUBSLLYT KYULNYKL MXFANQTAWTPTKC XHCWPLKTSH ODGA EYAD VC QDEJES IMM"
