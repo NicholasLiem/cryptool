@@ -68,4 +68,10 @@ RSpec.describe Ciphers::PlayfairCipher do
       expect(cipher_alg.preprocess_plain_text('JJJJ')).to eq(%w[IX IX IX IX])
     end
   end
+
+  describe '#preprocess_cipher_text' do
+    it 'slice the string into 2' do
+      expect(cipher_alg.preprocess_cipher_text('BANANA')).to eq(%w[BA NA NA])
+    end
+  end
 end
