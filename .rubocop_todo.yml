@@ -40,11 +40,11 @@ Layout/SpaceInsidePercentLiteralDelimiters:
 Metrics/AbcSize:
   Max: 30
 
-# Offense count: 2
 # Configuration parameters: CountComments, CountAsOne, AllowedMethods, AllowedPatterns.
 # AllowedMethods: refine
 Metrics/BlockLength:
-  Max: 36
+  Exclude:
+    - 'spec/**/*'
 
 # Offense count: 1
 # Configuration parameters: AllowedMethods, AllowedPatterns.
