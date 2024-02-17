@@ -21,8 +21,8 @@
         <%= label_tag :input_type, "Input Type:", id:"input_type_select_label", class:'form-label'%>
         <%= select_tag :input_type, options_for_select(['Text', 'Binary File'], selected: params[:input_type]), class:'form-select', id:"input_type_select" %>
 
-        <%= label_tag :plain_text, "Input Text:", id:"text_input_label", class:'form-label' %>
-        <%= text_field_tag :plain_text, params[:plain_text], id:"text_input", class:"form-input" %>
+        <%= label_tag :input_text, "Input Text:", id:"text_input_label", class:'form-label' %>
+        <%= text_field_tag :input_text, params[:input_text], id:"text_input", class:"form-input" %>
 
         
         <div class='form-label' id="file_input_label" style="display: none;">
@@ -63,13 +63,13 @@
 
 </div> 
 
-<% if @encrypted_text %>
+<% if @result_text %>
   <div class='popup-container' id='popup'>
     <div class='black-overlay' id='black-overlay'></div>
 
     <div class='result-container'>
       <label class="subtitle"> Cipher Result </label>
-      <textarea class="result-text-area" readonly><%= @encrypted_text %></textarea>
+      <textarea class="result-text-area" readonly><%= @result_text %></textarea>
     </div>
   </div>
 <% end %>

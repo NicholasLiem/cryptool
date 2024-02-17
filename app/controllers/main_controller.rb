@@ -1,5 +1,5 @@
 class MainController < ApplicationController
   def show
-    @encrypted_text = session.delete(:encrypted_text)
+    @result_text = session.delete(:result_text)
   end
 end

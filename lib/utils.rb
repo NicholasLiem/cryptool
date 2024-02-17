@@ -8,4 +8,11 @@ module Utils
   def is_letter_and_upcase(char)
     char.ord >= 65 && char.ord <= 90
   end
+
+  def choose_service(algorithm_key)
+    case algorithm_key
+    when :vigenere
+      VigenereCipher.new
+    end
+  end
 end
