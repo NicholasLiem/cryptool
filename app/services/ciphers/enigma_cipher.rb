@@ -1,4 +1,4 @@
- module Ciphers
+module Ciphers
   class EnigmaCipher < EncryptionService
     include Utils
 

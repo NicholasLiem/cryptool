@@ -2,8 +2,8 @@ TOTAL_ASCII = 256
 
 def transposition_cipher(row, col, text)
   matrix = Array.new(row) { Array.new(col, ' ') }
-  remainder = row * col - text.length
-  (1..remainder).each do |i|
+  remainder = (row * col) - text.length
+  (1..remainder).each do |_i|
     text += '*'
   end
 
@@ -17,20 +17,17 @@ def transposition_cipher(row, col, text)
   #   puts row.join(' ')
   # end
 
-
   result = ''
-  (0..col-1).each do |j|
-    (0..row-1).each do |i|
-      temp_char = text[col*i + j]
+  (0..col - 1).each do |j|
+    (0..row - 1).each do |i|
+      temp_char = text[(col * i) + j]
       result += temp_char
     end
   end
 
   puts result
 
-
-  return matrix
-  
+  matrix
 end
 
 def encrypt_data(data, key)
@@ -67,9 +64,7 @@ def encrypt_data(data, key)
   row = (result.length.to_f / col).ceil
   transposition_cipher(row, col, result)
 
-
   result
 end
-
 
 puts(encrypt_data('B$%E$!%#A123##34712BFCIE138ASAWE'.upcase, '%!&01#'))
