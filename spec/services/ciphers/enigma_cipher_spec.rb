@@ -42,4 +42,40 @@ RSpec.describe Ciphers::EnigmaCipher do
       expect(decrypted_message).to eq(original_message)
     end
   end
+
+  describe 'Testing the first character' do
+    context '#plugboard.swap' do
+      it 'correctly swaps' do
+        expect(enigma.plugboard.swap('H')).to eq('G')
+      end
+    end
+
+    context '#rotor.encrypt_forward' do
+      it 'correctly encrypt forward' do
+        expect(enigma.rotors.first.encrypt_forward('G')).to eq('D')
+        expect(enigma.rotors.second.encrypt_forward('D')).to eq('K')
+        expect(enigma.rotors.third.encrypt_forward('K')).to eq('X')
+      end
+    end
+
+    context '#reflector' do
+      it 'correctly reflects' do
+        expect(enigma.reflector.reflect('X')).to eq('J')
+      end
+    end
+
+    context '#rotor.encrypt_backward' do
+      it 'correctly encrypt backward' do
+        expect(enigma.rotors.third.encrypt_backward('J')).to eq('E')
+        expect(enigma.rotors.second.encrypt_backward('E')).to eq('Z')
+        expect(enigma.rotors.first.encrypt_backward('Z')).to eq('J')
+      end
+    end
+
+    context '#plugboard.swap' do
+      it 'correctly swaps' do
+        expect(enigma.plugboard.swap('J')).to eq('I')
+      end
+    end
+  end
 end
