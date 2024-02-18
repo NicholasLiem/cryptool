@@ -5,14 +5,14 @@ RSpec.describe Ciphers::HillCipher do
 
   describe '#encrypt_data and #decrypt_data' do
     [
-      { key: '', plain_text: 'paymoremoney', cipher_text: 'LNSHDLEWMTRW' }
+      { key: '', plain_text: 'PAYMOREMONEY', cipher_text: 'LNSHDLEWMTRW' }
     ].each do |test_case|
       context "with key '#{test_case[:key]}'" do
         it 'correctly encrypts and decrypts' do
           encrypted = cipher_alg.encrypt_data(test_case[:plain_text], test_case[:key])
           expect(encrypted).to eq(test_case[:cipher_text])
-          # decrypted = cipher_alg.decrypt_data(test_case[:cipher_text], test_case[:key])
-          # expect(decrypted).to eq(test_case[:plain_text])
+          decrypted = cipher_alg.decrypt_data(test_case[:cipher_text], test_case[:key])
+          expect(decrypted).to eq(test_case[:plain_text])
         end
       end
     end

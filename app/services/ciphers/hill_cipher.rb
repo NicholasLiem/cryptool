@@ -7,12 +7,19 @@ module Ciphers
     ALPHABET              = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.freeze
     SPECIAL_KEY_MARK      = '#'.freeze
     SPECIAL_DATA_MARK     = "$".freeze
-    BASE = 'A'.ord
+    BASE                  = 'A'.ord
+    MODULUS               = ALPHABET.size
 
     def encrypt_data(data, key)
       key_array = preprocess_key_text(key)
       data_array = preprocess_plain_text(data, key_array.size)
       encrypt(data_array, key_array)
+    end
+
+    def decrypt_data(cipher_text, key)
+      key_array = preprocess_key_text(key)
+      data_array = preprocess_plain_text(cipher_text, key_array.size)
+      decrypt(data_array, key_array)
     end
 
     def encrypt(data_array, key_array)
@@ -53,8 +60,42 @@ module Ciphers
       result_arr
     end
 
-    def decrypt_data(data, key)
-      # TODO
+    def decrypt(data_array, key_array)
+      result = ''
+      key_matrix = Matrix[*key_array]
+      inverse_key_matrix = inverse_matrix(key_matrix)
+      data_array.each do |data_slice|
+        data_vector = Matrix.column_vector(data_slice)
+        decrypted_matrix = inverse_key_matrix * data_vector
+        decrypted_matrix.column(0).to_a.each do |num|
+          result += ALPHABET[num.modulo(MODULUS)]
+        end
+      end
+
+      result
+    end
+
+    def inverse_matrix(matrix)
+      det = matrix.determinant
+      raise 'Matrix is not invertible' if det.zero?
+
+      det_mod_inverse = modular_inverse(det, MODULUS)
+      adjugate = matrix.adjugate
+      (adjugate * det_mod_inverse).map { |e| e.modulo(MODULUS) }
+    end
+
+    def modular_inverse(number, modulus)
+      g, x = extended_gcd(number, modulus)
+      raise 'Modular inverse does not exist' if g != 1
+
+      x % modulus
+    end
+
+    def extended_gcd(a, b) # rubocop:disable Naming/MethodParameterName
+      return [b, 0, 1] if (a % b).zero?
+
+      g, x, y = extended_gcd(b, a % b)
+      [g, y, x - (y * (a / b).floor)]
     end
   end
 end
