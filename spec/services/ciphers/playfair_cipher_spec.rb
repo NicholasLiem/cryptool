@@ -6,7 +6,7 @@ RSpec.describe Ciphers::PlayfairCipher do
   describe '#encrypt_data and #decrypt_data' do
     [
       { key: 'PLAYFAIR', plain_text: 'HELLOWORLD', cipher_text: 'KGYVRVVQGRCZ' },
-      { key: 'JALANGANESHASEPULUH', plain_text: 'TEMUIIBUNANTIMALAM', cipher_text: 'MUTELVEMPGLGMGOINLQV'}
+      { key: 'JALANGANESHASEPULUH', plain_text: 'TEMUIIBUNANTIMALAM', cipher_text: 'MUTELVEMPGLGMGOINLQV' }
     ].each do |test_case|
       context "with key '#{test_case[:key]}'" do
         it 'correctly encrypts and decrypts' do
