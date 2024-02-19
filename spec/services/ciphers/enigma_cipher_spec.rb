@@ -1,44 +1,37 @@
 require 'rails_helper'
 
 RSpec.describe Ciphers::EnigmaCipher do
-  let(:rotor1) { Ciphers::Rotor.new('EKMFLGDQVZNTOWYHXUSPAIBRCJ', 16) } # Notch at position 16 (Q)
-  let(:rotor2) { Ciphers::Rotor.new('AJDKSIRUXBLHWTMCQGZNPYFVOE', 4) }  # Notch at position 4 (E)
-  let(:rotor3) { Ciphers::Rotor.new('BDFHJLCPRTXVZNYEIWGAKMUSQO', 21) } # Notch at position 21 (V)
-  let(:reflector_wiring) do
+  let(:rotor1) { Ciphers::Rotor.new('EKMFLGDQVZNTOWYHXUSPAIBRCJ', Ciphers::EnigmaCipher::ROTOR_1_NOTCH) }
+  let(:rotor2) { Ciphers::Rotor.new('AJDKSIRUXBLHWTMCQGZNPYFVOE', Ciphers::EnigmaCipher::ROTOR_2_NOTCH) }
+  let(:rotor3) { Ciphers::Rotor.new('BDFHJLCPRTXVZNYEIWGAKMUSQO', Ciphers::EnigmaCipher::ROTOR_3_NOTCH) }
+  let(:reflector) { Ciphers::Reflector.new('YRUHQSLDPXNGOKMIEBFZCWVJAT') }
+  let(:plugboard) { Ciphers::Plugboard.new('BADCFEHGJILKNMPORQTSVUXWZY') }
+  let(:additional_params) do
     {
-      'A' => 'Y', 'B' => 'R', 'C' => 'U', 'D' => 'H', 'E' => 'Q', 'F' => 'S', 'G' => 'L',
-      'H' => 'D', 'I' => 'P', 'J' => 'X', 'K' => 'N', 'L' => 'G', 'M' => 'O', 'N' => 'K',
-      'O' => 'M', 'P' => 'I', 'Q' => 'E', 'R' => 'B', 'S' => 'F', 'T' => 'Z', 'U' => 'C',
-      'V' => 'W', 'W' => 'V', 'X' => 'J', 'Y' => 'A', 'Z' => 'T'
+      plugboard_input: 'BADCFEHGJILKNMPORQTSVUXWZY',
+      rotor_1_input: 'EKMFLGDQVZNTOWYHXUSPAIBRCJ',
+      rotor_2_input: 'AJDKSIRUXBLHWTMCQGZNPYFVOE',
+      rotor_3_input: 'BDFHJLCPRTXVZNYEIWGAKMUSQO',
+      reflector_input: 'YRUHQSLDPXNGOKMIEBFZCWVJAT'
     }
   end
-  let(:plugboard_wiring) do
-    {
-      'A' => 'B', 'B' => 'A', 'C' => 'D', 'D' => 'C', 'E' => 'F', 'F' => 'E',
-      'G' => 'H', 'H' => 'G', 'I' => 'J', 'J' => 'I', 'K' => 'L', 'L' => 'K',
-      'M' => 'N', 'N' => 'M', 'O' => 'P', 'P' => 'O', 'Q' => 'R', 'R' => 'Q',
-      'S' => 'T', 'T' => 'S', 'U' => 'V', 'V' => 'U', 'W' => 'X', 'X' => 'W',
-      'Y' => 'Z', 'Z' => 'Y'
-    }
-  end
-  let(:reflector) { Ciphers::Reflector.new(reflector_wiring) }
-  let(:plugboard) { Ciphers::Plugboard.new(plugboard_wiring) }
-  let(:enigma) { described_class.new([rotor1, rotor2, rotor3], reflector, plugboard) }
+
+  let(:enigma) { described_class.new(additional_params) }
   let(:original_message) { 'HELLOWORLD' }
 
   describe '#encrypt_data' do
     it 'correctly encrypts a message' do
-      encrypted_message = enigma.encrypt_data(original_message)
+      encrypted_message = enigma.encrypt_data(original_message, nil)
       expect(encrypted_message).to eq("IJVWQTMUJH")
     end
 
     it 'correctly decrypts the encrypted message' do
-      encrypted_message = enigma.encrypt_data(original_message)
+      encrypted_message = enigma.encrypt_data(original_message, nil)
       enigma.instance_variable_set(:@rotors, [rotor1, rotor2, rotor3].map do |r|
                                                r.position = 0
                                                r
                                              end)
-      decrypted_message = enigma.encrypt_data(encrypted_message)
+      decrypted_message = enigma.decrypt_data(encrypted_message, nil)
       expect(decrypted_message).to eq(original_message)
     end
   end
@@ -75,6 +68,25 @@ RSpec.describe Ciphers::EnigmaCipher do
     context '#plugboard.swap' do
       it 'correctly swaps' do
         expect(enigma.plugboard.swap('J')).to eq('I')
+      end
+    end
+  end
+
+  describe 'Testing the mappings' do
+    context 'Reflector' do
+      it 'correctly reflects characters' do
+        expect(reflector.reflect('A')).to eq('Y')
+        expect(reflector.reflect('Y')).to eq('A')
+      end
+    end
+
+    context 'Plugboard' do
+      it 'correctly swaps characters' do
+        expect(plugboard.swap('A')).to eq('B')
+        expect(plugboard.swap('B')).to eq('A')
+        expect(plugboard.swap('C')).to eq('D')
+        expect(plugboard.swap('D')).to eq('C')
+        expect(plugboard.swap('E')).to eq('F')
       end
     end
   end

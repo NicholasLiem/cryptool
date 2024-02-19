@@ -2,19 +2,35 @@ module Ciphers
   class EnigmaCipher < EncryptionService
     include Utils
 
+    ROTOR_1_NOTCH = 24
+    ROTOR_2_NOTCH = 16
+    ROTOR_3_NOTCH = 9
+
     attr_reader :rotors, :reflector, :plugboard
 
-    def initialize(rotors, reflector, plugboard)
+    def initialize(additional_params)
       super()
+
+      rotors = []
+      (1..3).each do |i|
+        rotor_input_key = :"rotor_#{i}_input"
+        rotor_wiring = additional_params[rotor_input_key]
+        rotors << Rotor.new(rotor_wiring, ROTOR_1_NOTCH)
+      end
+
       @rotors = rotors
-      @reflector = reflector
-      @plugboard = plugboard
+      @reflector = Reflector.new(additional_params[:reflector_input])
+      @plugboard = Plugboard.new(additional_params[:plugboard_input])
     end
 
-    def encrypt_data(data)
+    def encrypt_data(data, _key)
       data.upcase.chars.map do |char|
         encrypt_char(char)
       end.join
+    end
+
+    def decrypt_data(data, _key)
+      encrypt_data(data, nil)
     end
 
     def encrypt_char(char)
@@ -58,25 +74,29 @@ module Ciphers
   end
 
   class Reflector
+    attr_reader :mapping
+
     # Mirip plugboard
-    def initialize(reflection)
-      @reflection = reflection
+    def initialize(mapping)
+      @mapping = ('A'..'Z').zip(mapping.chars).to_h
     end
 
     def reflect(letter)
-      @reflection[letter]
+      @mapping[letter] || letter
     end
   end
 
   class Plugboard
+    attr_reader :mapping
+
     # Diinitialize dengan melakukan swapping manual
-    # Inputnya misalnya seperti ini { 'A' => 'B', 'B' => 'A', etc }
-    def initialize(swaps = {})
-      @swaps = swaps
+    # Inputnya misalnya seperti ini { 'A' => 'B', 'B' => 'A', ..., 'ALPHABET_INDEX' => 'INPUT_CHAR' }
+    def initialize(mapping)
+      @mapping = ('A'..'Z').zip(mapping.chars).to_h
     end
 
     def swap(letter)
-      @swaps[letter] || @swaps.key(letter) || letter
+      @mapping[letter] || letter
     end
   end
 

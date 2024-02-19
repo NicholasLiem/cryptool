@@ -15,6 +15,11 @@ module Utils
     text.gsub(" ", "").upcase.encode('UTF-8')
   end
 
+  def sanitize_enigma_text(text)
+    sanitized_text = text.gsub(/[^a-zA-Z]/, '')
+    sanitized_text.upcase.encode('UTF-8')
+  end
+
   def is_letter_and_upcase(char)
     char.ord >= 65 && char.ord <= 90
   end
@@ -27,7 +32,7 @@ module Utils
     Base64.decode64(text)
   end
 
-  def choose_service(algorithm_key)
+  def choose_service(algorithm_key, additional_params = nil)
     case algorithm_key
     when :vigenere
       Ciphers::VigenereCipher.new
@@ -44,7 +49,7 @@ module Utils
     when :super_encryption
       Ciphers::SuperEncryptionCipher.new
     when :enigma
-      Ciphers::EnigmaCipher.new
+      Ciphers::EnigmaCipher.new(additional_params)
     end
   end
 

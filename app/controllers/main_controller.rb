@@ -20,15 +20,15 @@ class MainController < ApplicationController
     end
   end
 
-  def encrypt_text
+  def encrypt_text # rubocop:disable Metrics/AbcSize
     # Extract parameters
     # input_type = params[:input_type]
-    input_text = params[:input_text]
+    input_text    = params[:input_text]
     algorithm_key = params[:algorithm].to_sym
-    key = params[:encryption_key]
+    key           = params[:encryption_key]
 
-    # Encrypt the text
-    encryption_service = Utils.choose_service(algorithm_key)
+    additional_params = sanitize_enigma_params(params)
+    encryption_service = Utils.choose_service(algorithm_key, additional_params)
 
     # Go through preparation
     plain_text = encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) || encryption_service.instance_of?(Ciphers::SuperEncryptionCipher) ? input_text : Utils.sanitize_text(input_text)
@@ -57,15 +57,16 @@ class MainController < ApplicationController
     redirect_to main_page_path
   end
 
-  def decrypt_text
+  def decrypt_text # rubocop:disable Metrics/AbcSize
     input_text = params[:input_text]
     algorithm_key = params[:algorithm].to_sym
     key = params[:encryption_key]
 
-    encryption_service = Utils.choose_service(algorithm_key)
+    additional_params = sanitize_enigma_params(params)
+    encryption_service = Utils.choose_service(algorithm_key, additional_params)
 
-    input_text = Utils.sanitize_text(input_text)
-    key = Utils.sanitize_text(key)
+    input_text = Utils.sanitize_text(input_text) unless encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) || encryption_service.instance_of?(Ciphers::SuperEncryptionCipher)
+    key = Utils.sanitize_text(key) unless encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) || encryption_service.instance_of?(Ciphers::SuperEncryptionCipher)
 
     decrypted_text = encryption_service.decrypt_data(input_text, key) if encryption_service
     encoded_decrypted_text = Utils.encode_to_base64(decrypted_text)
@@ -85,5 +86,15 @@ class MainController < ApplicationController
       flash[:alert] = "Decryption failed."
     end
     redirect_to main_page_path
+  end
+
+  def sanitize_enigma_params(params)
+    {
+      plugboard_input: Utils.sanitize_enigma_text(params[:plugboard_input]),
+      rotor_1_input: Utils.sanitize_enigma_text(params[:rotor_1_input]),
+      rotor_2_input: Utils.sanitize_enigma_text(params[:rotor_2_input]),
+      rotor_3_input: Utils.sanitize_enigma_text(params[:rotor_3_input]),
+      reflector_input: Utils.sanitize_enigma_text(params[:reflector_input])
+    }
   end
 end
