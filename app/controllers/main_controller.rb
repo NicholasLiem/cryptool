@@ -33,8 +33,8 @@ class MainController < ApplicationController
     encryption_service = Utils.choose_service(algorithm_key)
 
     # Go through preparation
-    plain_text = encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) ? input_text : Utils.sanitize_text(input_text)
-    key = Utils.sanitize_text(key) unless encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher)
+    plain_text = encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) || encryption_service.instance_of?(Ciphers::SuperEncryptionCipher) ? input_text : Utils.sanitize_text(input_text)
+    key = Utils.sanitize_text(key) unless encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) || encryption_service.instance_of?(Ciphers::SuperEncryptionCipher)
 
     encrypted_text = encryption_service.encrypt_data(plain_text, key) if encryption_service
     encoded_encrypted_text = Utils.encode_to_base64(encrypted_text)
@@ -50,7 +50,7 @@ class MainController < ApplicationController
                                encoded_encrypted_text,
                                encryption_service)
     if encrypted_data
-      session[:result_text] = encrypted_data unless encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher)
+      session[:result_text] = encrypted_data unless encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) || encryption_service.instance_of?(Ciphers::SuperEncryptionCipher)
       session[:encoded_result_text] = encoded_encrypted_text
 
     else

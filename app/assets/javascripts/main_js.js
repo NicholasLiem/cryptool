@@ -30,14 +30,47 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.addEventListener("DOMContentLoaded", function () {
   var algorithmSelect = document.getElementById("algorithm-select");
+  var default_key = document.getElementsByName("default_cipher_key");
+  var enigma_key = document.getElementsByName("enigma_cipher_key");
+  var cipher_hint = document.getElementById("hint");
+
+  closeDefaultKey = () => {
+    for (var i = 0; i < default_key.length; i++) {
+      default_key[i].style.display = "none";
+    }
+  };
+  openDefaultKey = () => {
+    for (var i = 0; i < default_key.length; i++) {
+      default_key[i].style.display = "block";
+    }
+  };
+  closeEnigmaKey = () => {
+    for (var i = 0; i < enigma_key.length; i++) {
+      enigma_key[i].style.display = "none";
+    }
+  };
+  openEnigmaKey = () => {
+    for (var i = 0; i < enigma_key.length; i++) {
+      enigma_key[i].style.display = "block";
+    }
+  };
 
   algorithmSelect.addEventListener("change", function () {
-    console.log(this.value);
     if (this.value === "affine") {
-      document.getElementById("hint").innerHTML =
+      cipher_hint.innerHTML =
         "First key and second key need to be seperated by a hyphen ('-'). Example: 2-5";
+      console.log(cipher_hint);
+      closeEnigmaKey();
+      openDefaultKey();
+    } else if (this.value == "enigma") {
+      cipher_hint.innerHTML = 
+        "Please insert a randomize sequence of all the alphabets characters. Example: BFWASDMN...";
+      closeDefaultKey();
+      openEnigmaKey();
     } else {
-      document.getElementById("hint").innerHTML = " ";
+      cipher_hint.innerHTML = " ";
+      closeEnigmaKey();
+      openDefaultKey();
     }
   });
 });
@@ -53,27 +86,29 @@ blackoverlay.addEventListener("click", closePopup);
 document.addEventListener("DOMContentLoaded", function () {
   var result = document.getElementById("result");
   var popup = document.getElementById("popup");
-  var encrypt = document.getElementById('encrypt')
-  var decrypt = document.getElementById('decrypt')
+  var encrypt = document.getElementById("encrypt");
+  var decrypt = document.getElementById("decrypt");
   function openPopup() {
-    event.preventDefault()
+    event.preventDefault();
     popup.style.display = "flex";
     console.log("buka");
   }
-  function openPopupSubmit(){
+  function openPopupSubmit() {
     popup.style.display = "flex";
     console.log("buka");
   }
   result.addEventListener("click", openPopup);
 });
 
-// var popup = document.getElementById('popup')
-// var encrypt = document.getElementById('encrypt')
-// var decrypt = document.getElementById('decrypt')
-// result.addEventListener("click", openPopup);
-// encrypt.addEventListener("click", openPopup);
-// decrypt.addEventListener("click", openPopup);
-
-// function openPopup(){
-//   popup.style.display = "flex";
-// }
+document.addEventListener("DOMContentLoaded", function () {
+  function openPopup() {
+    event.preventDefault();
+    popup.style.display = "flex";
+    console.log("buka");
+  }
+  function openPopupSubmit() {
+    popup.style.display = "flex";
+    console.log("buka");
+  }
+  result.addEventListener("click", openPopup);
+});

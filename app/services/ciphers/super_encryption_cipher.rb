@@ -4,7 +4,7 @@ module Ciphers
     TOTAL_ASCII = 256
 
     def transposition_cipher(row, col, text)
-      matrix = Array.new(row) { Array.new(col, ' ') }
+      Array.new(row) { Array.new(col, ' ') }
       remainder = (row * col) - text.length
       (1..remainder).each do |_i|
         text += '0'
@@ -27,7 +27,7 @@ module Ciphers
           result += temp_char
         end
       end
-      return result
+      result
     end
 
     def encrypt_data(data, key)
@@ -59,8 +59,7 @@ module Ciphers
       end
       col = key.length
       row = (result.length.to_f / col).ceil
-      result = transposition_cipher(row, col, result)
-      result
+      transposition_cipher(row, col, result)
     end
 
     def decrypt_data(data, key)

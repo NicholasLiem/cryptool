@@ -47,8 +47,43 @@
         <div></div>
         <div id='hint'> </div>
 
-        <%= label_tag :encryption_key, "Key:", class: 'form-label' %>
-        <%= text_field_tag :encryption_key, params[:encryption_key], id:'file_input', class:'form-input' %>
+        <div name='default_cipher_key'>
+          <%= label_tag :encryption_key, "Key:", class: 'form-label' %>
+        </div>
+        <div name='default_cipher_key'>
+          <%= text_field_tag :encryption_key, params[:encryption_key], id:'file_input', class:'form-input' %>
+        </div>
+
+        <div name='enigma_cipher_key' style='display:none'>
+          <%= label_tag :enigma_key, "Plugboard Setting:", class: 'form-label' %>
+        </div>
+        <div name='enigma_cipher_key' style='display:none'>
+          <%= text_field_tag :enigma_key, params[:enigma_key], id:'file_input', class:'form-input' %>
+        </div>
+        <div name='enigma_cipher_key' style="display:none">
+          <%= label_tag :enigma_key, "1st Rotor Setting:", class: 'form-label' %>
+        </div>
+        <div name='enigma_cipher_key' style="display:none">
+          <%= text_field_tag :enigma_key, params[:enigma_key], id:'file_input', class:'form-input' %>
+        </div>
+        <div name='enigma_cipher_key' style='display:none'>
+          <%= label_tag :enigma_key, "2nd Rotor Setting:", class: 'form-label' %>
+        </div>
+        <div name='enigma_cipher_key' style='display:none'>
+          <%= text_field_tag :enigma_key, params[:enigma_key], id:'file_input', class:'form-input' %>
+        </div>
+        <div name='enigma_cipher_key' style='display:none'>
+          <%= label_tag :enigma_key, "3rd Rotor Setting:", class: 'form-label' %>
+        </div>
+        <div name='enigma_cipher_key' style='display:none'>
+          <%= text_field_tag :enigma_key, params[:enigma_key], id:'file_input', class:'form-input' %>
+        </div>
+        <div name='enigma_cipher_key' style='display:none'>
+          <%= label_tag :enigma_key, "Reflector Setting:", class: 'form-label' %>
+        </div>
+        <div name='enigma_cipher_key' style='display:none'>
+          <%= text_field_tag :enigma_key, params[:enigma_key], id:'file_input', class:'form-input' %>
+        </div>
       </div>
 
       <div class='button-container'>
