@@ -73,7 +73,7 @@ class MainController < ApplicationController
     encoded_decrypted_text = Utils.encode_to_base64(decrypted_text)
 
     session[:cipher_name] = params[:algorithm].gsub("_", " ").upcase
-    session[:input_text] = decrypted_text
+    session[:input_text] = input_text
     session[:key] = key
 
     handle_decryption_result(decrypted_text, encryption_service, encoded_decrypted_text)
