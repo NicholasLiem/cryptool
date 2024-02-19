@@ -40,7 +40,7 @@ module Ciphers
     def preprocess_plain_text(data, slice_length)
       return Array.new(slice_length) { Array.new(slice_length, SPECIAL_DATA_MARK.ord - BASE) } if data.nil? || data.empty?
 
-      sliced_data = data.upcase.chars.each_slice(slice_length).to_a # Ensure data is uppercase to match ALPHABET
+      sliced_data = data.upcase.chars.each_slice(slice_length).to_a
       sliced_data.map! do |slice|
         slice.fill(SPECIAL_DATA_MARK, slice.length...slice_length) if slice.length < slice_length
         slice.map { |char| char.ord - BASE }

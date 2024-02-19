@@ -20,6 +20,14 @@ RSpec.describe Ciphers::AutoKeyVigenereCipher do
     end
   end
 
+  describe '#extend_key' do
+    context 'given a key and plain text' do
+      it 'correctly extends the key' do
+        expect(cipher_alg.extend_key('HALOHALOBANDUNG', 'TESTKEY')).to eq('TESTKEYHALOHALO')
+      end
+    end
+  end
+
   describe '#square_encrypt' do
     [
       { pj: 'A', ki: 'B', result: 'B' },

@@ -6,6 +6,7 @@ A self-hosted cryptography tool to encrypt and decrypt files or text based with 
 
 ## 🔥 Features
 - Encrypt and decrypt text or file with your own key and multiple encryption algorithms
+- Provided with enough spec files to check how the program works! (spec folder)
 
 ## 🖥️ Running locally for development
 
