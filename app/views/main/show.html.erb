@@ -125,4 +125,10 @@
   </div>
 <% end %>
 
+<% if flash[:alert] %>
+  <script type="text/javascript">
+    alert("<%= j flash[:alert] %>");
+  </script>
+<% end %>
+
 <% end %>

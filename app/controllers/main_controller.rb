@@ -20,9 +20,12 @@ class MainController < ApplicationController
     end
   end
 
-  def encrypt_text # rubocop:disable Metrics/AbcSize
+  def encrypt_text # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     # Extract parameters
     # input_type = params[:input_type]
+    raise InvalidInputError, "Input text cannot be blank" if params[:input_text].blank?
+    raise InvalidInputError, "Encryption key cannot be blank" if params[:encryption_key].blank?
+
     input_text    = params[:input_text]
     algorithm_key = params[:algorithm].to_sym
     key           = params[:encryption_key]
@@ -41,23 +44,16 @@ class MainController < ApplicationController
     session[:input_text] = plain_text
     session[:key] = key
 
-    handle_encryption_result(encrypted_text, encoded_encrypted_text, encryption_service)
+    handle_result(encrypted_text, encoded_encrypted_text, encryption_service)
+  rescue StandardError => e
+    flash[:alert] = e.message
+    redirect_to main_page_path and return
   end
 
-  def handle_encryption_result(encrypted_data,
-                               encoded_encrypted_text,
-                               encryption_service)
-    if encrypted_data
-      session[:result_text] = encrypted_data unless encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) || encryption_service.instance_of?(Ciphers::SuperEncryptionCipher)
-      session[:encoded_result_text] = encoded_encrypted_text
+  def decrypt_text # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+    raise InvalidInputError, "Input text cannot be blank" if params[:input_text].blank?
+    raise InvalidInputError, "Encryption key cannot be blank" if params[:encryption_key].blank?
 
-    else
-      flash[:alert] = "Encryption failed."
-    end
-    redirect_to main_page_path
-  end
-
-  def decrypt_text # rubocop:disable Metrics/AbcSize
     input_text = params[:input_text]
     algorithm_key = params[:algorithm].to_sym
     key = params[:encryption_key]
@@ -75,26 +71,27 @@ class MainController < ApplicationController
     session[:input_text] = input_text
     session[:key] = key
 
-    handle_decryption_result(decrypted_text, encryption_service, encoded_decrypted_text)
+    handle_result(decrypted_text, encryption_service, encoded_decrypted_text)
+  rescue StandardError => e
+    puts e.message
+    redirect_to main_page_path and return
   end
 
-  def handle_decryption_result(decrypted_data, encryption_service, encoded_decrypted_text)
-    if decrypted_data
-      session[:result_text] = decrypted_data unless encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher)
-      session[:encoded_result_text] = encoded_decrypted_text
+  def handle_result(result, encoded_result, direction)
+    if result
+      unless @encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) || (direction == :decrypt && @encryption_service.instance_of?(Ciphers::SuperEncryptionCipher))
+        session[:result_text] = result
+      end
+      session[:encoded_result_text] = encoded_result
     else
-      flash[:alert] = "Decryption failed."
+      flash[:alert] = "Operation failed."
     end
     redirect_to main_page_path
   end
 
   def sanitize_enigma_params(params)
-    {
-      plugboard_input: Utils.sanitize_enigma_text(params[:plugboard_input]),
-      rotor_1_input: Utils.sanitize_enigma_text(params[:rotor_1_input]),
-      rotor_2_input: Utils.sanitize_enigma_text(params[:rotor_2_input]),
-      rotor_3_input: Utils.sanitize_enigma_text(params[:rotor_3_input]),
-      reflector_input: Utils.sanitize_enigma_text(params[:reflector_input])
-    }
+    %i[plugboard_input rotor_1_input rotor_2_input rotor_3_input reflector_input].to_h do |key|
+      [key, Utils.sanitize_enigma_text(params[key])]
+    end
   end
 end

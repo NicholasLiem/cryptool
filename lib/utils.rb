@@ -50,6 +50,8 @@ module Utils
       Ciphers::SuperEncryptionCipher.new
     when :enigma
       Ciphers::EnigmaCipher.new(additional_params)
+    else
+      raise EncryptionServiceError, "Algorithm is not specified"
     end
   end
 
