@@ -23,8 +23,9 @@ class MainController < ApplicationController
   def encrypt_text # rubocop:disable Metrics/AbcSize
     # Extract parameters
     # input_type = params[:input_type]
-    raise InvalidInputError, "Input text cannot be blank" if params[:input_text].blank?
-    raise InvalidInputError, "Encryption key cannot be blank" if params[:encryption_key].blank?
+
+    # raise InvalidInputError, "Input text cannot be blank" if params[:input_text].blank?
+    # raise InvalidInputError, "Encryption key cannot be blank" if params[:encryption_key].blank?
 
     input_text    = params[:input_text]
     algorithm_key = params[:algorithm].to_sym
@@ -40,6 +41,9 @@ class MainController < ApplicationController
       key = Utils.sanitize_text(key)
     end
 
+    raise InvalidInputError, "Input must contain at least a valid character" if input_text.blank?
+    raise InvalidInputError, "Key must contain at least a valid character" if key.blank?
+
     encrypted_text = encryption_service.encrypt_data(input_text, key) if encryption_service
     encoded_encrypted_text = Utils.encode_to_base64(encrypted_text)
 
@@ -54,8 +58,9 @@ class MainController < ApplicationController
   end
 
   def decrypt_text # rubocop:disable Metrics/AbcSize
-    raise InvalidInputError, "Input text cannot be blank" if params[:input_text].blank?
-    raise InvalidInputError, "Encryption key cannot be blank" if params[:encryption_key].blank?
+
+    # raise InvalidInputError, "Input text cannot be blank" if params[:input_text].blank?
+    # raise InvalidInputError, "Encryption key cannot be blank" if params[:encryption_key].blank?
 
     input_text = params[:input_text]
     algorithm_key = params[:algorithm].to_sym
@@ -69,6 +74,9 @@ class MainController < ApplicationController
       input_text = Utils.sanitize_text(input_text)
       key = Utils.sanitize_text(key)
     end
+
+    raise InvalidInputError, "Input must contain at least a valid character" if input_text.blank?
+    raise InvalidInputError, "Key must contain at least a valid character" if key.blank?
 
     decrypted_text = encryption_service.decrypt_data(input_text, key) if encryption_service
     encoded_decrypted_text = Utils.encode_to_base64(decrypted_text)
