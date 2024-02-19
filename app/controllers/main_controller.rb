@@ -58,7 +58,6 @@ class MainController < ApplicationController
   end
 
   def decrypt_text # rubocop:disable Metrics/AbcSize
-
     # raise InvalidInputError, "Input text cannot be blank" if params[:input_text].blank?
     # raise InvalidInputError, "Encryption key cannot be blank" if params[:encryption_key].blank?
 
