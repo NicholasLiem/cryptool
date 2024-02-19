@@ -9,10 +9,10 @@ class MainController < ApplicationController
   end
 
   def service_gateway
-    case params[:service_type]
-    when 'encrypt'
+    case params[:service_type].upcase
+    when 'ENCRYPT'
       encrypt_text
-    when 'decrypt'
+    when 'DECRYPT'
       decrypt_text
     else
       flash[:alert] = "Invalid service type."
@@ -34,18 +34,21 @@ class MainController < ApplicationController
     encryption_service = Utils.choose_service(algorithm_key, additional_params)
 
     # Go through preparation
-    plain_text = encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) || encryption_service.instance_of?(Ciphers::SuperEncryptionCipher) ? input_text : Utils.sanitize_text(input_text)
-    key = Utils.sanitize_text(key) unless encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) || encryption_service.instance_of?(Ciphers::SuperEncryptionCipher)
+    # Only sanitize when its not 256 ASCII
+    if (!encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) && !encryption_service.instance_of?(Ciphers::SuperEncryptionCipher))
+      input_text = Utils.sanitize_text(input_text) 
+      key = Utils.sanitize_text(key) 
+    end
 
-    encrypted_text = encryption_service.encrypt_data(plain_text, key) if encryption_service
+    encrypted_text = encryption_service.encrypt_data(input_text, key) if encryption_service
     encoded_encrypted_text = Utils.encode_to_base64(encrypted_text)
 
     session[:cipher_name] = params[:algorithm].gsub("_", " ").upcase
-    session[:input_text] = plain_text
+    session[:input_text] = input_text
     session[:key] = key
 
     handle_result(encrypted_text, encoded_encrypted_text, encryption_service)
-  rescue StandardError => e
+  rescue InvalidInputError => e
     flash[:alert] = e.message
     redirect_to main_page_path and return
   end
@@ -61,8 +64,11 @@ class MainController < ApplicationController
     additional_params = sanitize_enigma_params(params)
     encryption_service = Utils.choose_service(algorithm_key, additional_params)
 
-    input_text = Utils.sanitize_text(input_text) unless encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) || encryption_service.instance_of?(Ciphers::SuperEncryptionCipher)
-    key = Utils.sanitize_text(key) unless encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) || encryption_service.instance_of?(Ciphers::SuperEncryptionCipher)
+    # Only sanitize when its not 256 ASCII
+    if (!encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) && !encryption_service.instance_of?(Ciphers::SuperEncryptionCipher))
+      input_text = Utils.sanitize_text(input_text) 
+      key = Utils.sanitize_text(key) 
+    end
 
     decrypted_text = encryption_service.decrypt_data(input_text, key) if encryption_service
     encoded_decrypted_text = Utils.encode_to_base64(decrypted_text)
@@ -72,7 +78,7 @@ class MainController < ApplicationController
     session[:key] = key
 
     handle_result(decrypted_text, encryption_service, encoded_decrypted_text)
-  rescue StandardError => e
+  rescue InvalidInputError => e
     puts e.message
     redirect_to main_page_path and return
   end
