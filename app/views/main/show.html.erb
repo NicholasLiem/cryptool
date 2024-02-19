@@ -1,6 +1,6 @@
 <%= javascript_include_tag 'main_js' %>
 <%= stylesheet_link_tag "main_sheets" %>
-<%= form_with url: encrypt_text_path, local: true do |form| %>
+<%= form_with url: service_gateway_path, local: true do |form| %>
 <div class='page-container'>
   
   <div class='title-container'>
@@ -52,8 +52,8 @@
       </div>
 
       <div class='button-container'>
-        <%= submit_tag "Encrypt", id:"encrypt", class: 'encrypt-button' %>
-        <%= form.submit "Decrypt", id:"decrypt", class: 'decrypt-button' %>
+        <%= submit_tag "Encrypt", name: "service_type", value: "encrypt", id: "encrypt", class: 'encrypt-button' %>
+        <%= submit_tag "Decrypt", name: "service_type", value: "decrypt", id: "decrypt", class: 'decrypt-button' %>
         <button id='result' class='result-button'> Show Last Result </button>
       </div>
 
