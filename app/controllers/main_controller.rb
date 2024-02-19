@@ -20,7 +20,7 @@ class MainController < ApplicationController
     end
   end
 
-  def encrypt_text # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+  def encrypt_text # rubocop:disable Metrics/AbcSize
     # Extract parameters
     # input_type = params[:input_type]
     raise InvalidInputError, "Input text cannot be blank" if params[:input_text].blank?
@@ -35,9 +35,9 @@ class MainController < ApplicationController
 
     # Go through preparation
     # Only sanitize when its not 256 ASCII
-    if (!encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) && !encryption_service.instance_of?(Ciphers::SuperEncryptionCipher))
-      input_text = Utils.sanitize_text(input_text) 
-      key = Utils.sanitize_text(key) 
+    if !encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) && !encryption_service.instance_of?(Ciphers::SuperEncryptionCipher)
+      input_text = Utils.sanitize_text(input_text)
+      key = Utils.sanitize_text(key)
     end
 
     encrypted_text = encryption_service.encrypt_data(input_text, key) if encryption_service
@@ -53,7 +53,7 @@ class MainController < ApplicationController
     redirect_to main_page_path and return
   end
 
-  def decrypt_text # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+  def decrypt_text # rubocop:disable Metrics/AbcSize
     raise InvalidInputError, "Input text cannot be blank" if params[:input_text].blank?
     raise InvalidInputError, "Encryption key cannot be blank" if params[:encryption_key].blank?
 
@@ -65,9 +65,9 @@ class MainController < ApplicationController
     encryption_service = Utils.choose_service(algorithm_key, additional_params)
 
     # Only sanitize when its not 256 ASCII
-    if (!encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) && !encryption_service.instance_of?(Ciphers::SuperEncryptionCipher))
-      input_text = Utils.sanitize_text(input_text) 
-      key = Utils.sanitize_text(key) 
+    if !encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) && !encryption_service.instance_of?(Ciphers::SuperEncryptionCipher)
+      input_text = Utils.sanitize_text(input_text)
+      key = Utils.sanitize_text(key)
     end
 
     decrypted_text = encryption_service.decrypt_data(input_text, key) if encryption_service
