@@ -22,7 +22,7 @@ class MainController < ApplicationController
 
   def encrypt
     input_type    = params[:input_type]
-    input_text    = params[:input_text]
+    input         = params[:input_text]
     file          = params[:file]
     algorithm_key = params[:algorithm].to_sym
     key           = params[:encryption_key]
@@ -32,8 +32,9 @@ class MainController < ApplicationController
 
     if input_type == 'Binary File' && file
       input = handle_file_upload(file)
-    elsif !encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) && !encryption_service.instance_of?(Ciphers::SuperEncryptionCipher)
-      input = Utils.sanitize_text(input_text)
+    end
+    if !encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) && !encryption_service.instance_of?(Ciphers::SuperEncryptionCipher)
+      input = Utils.sanitize_text(input)
       key = Utils.sanitize_text(key) unless encryption_service.instance_of?(Ciphers::AffineCipher)
     end
 
@@ -56,7 +57,9 @@ class MainController < ApplicationController
   end
 
   def decrypt
-    input_text    = params[:input_text]
+    input         = params[:input_text]
+    file          = params[:file]
+    input_type    = params[:input_type]
     algorithm_key = params[:algorithm].to_sym
     key           = params[:encryption_key]
 
@@ -64,20 +67,26 @@ class MainController < ApplicationController
     encryption_service = Utils.choose_service(algorithm_key, additional_params)
 
     # Only sanitize when its not 256 ASCII
+    
+    if input_type == 'Binary File' && file
+      input = handle_file_upload(file)
+    end
     if !encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) && !encryption_service.instance_of?(Ciphers::SuperEncryptionCipher)
-      input_text = Utils.sanitize_text(input_text)
+      input = Utils.sanitize_text(input)
       # Special key for Affine Cipher, dont sanitize
       key = Utils.sanitize_text(key) unless encryption_service.instance_of?(Ciphers::AffineCipher)
     end
 
-    raise InvalidInputError, "Input must contain at least a valid character" if input_text.blank?
+    if input.blank? && !(encryption_service.instance_of?(Ciphers::SuperEncryptionCipher) || encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher)) && input_type == 'Binary'
+      raise InvalidInputError, "Input must contain at least a valid character"
+    end
     raise InvalidInputError, "Key must contain at least a valid character" if key.blank? && !encryption_service.instance_of?(Ciphers::EnigmaCipher)
 
-    decrypted_text = encryption_service.decrypt_data(input_text, key) if encryption_service
+    decrypted_text = encryption_service.decrypt_data(input, key) if encryption_service
     encoded_decrypted_text = Utils.encode_to_base64(decrypted_text)
 
     session[:cipher_name] = params[:algorithm].gsub("_", " ").upcase
-    session[:input_text] = input_text
+    session[:input_text] = input
     session[:key] = key
 
     handle_result(decrypted_text, encoded_decrypted_text, encryption_service)
