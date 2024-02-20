@@ -24,7 +24,6 @@ class MainController < ApplicationController
     # Extract parameters
     # input_type = params[:input_type]
     raise InvalidInputError, "Input text cannot be blank" if params[:input_text].blank?
-    raise InvalidInputError, "Encryption key cannot be blank" if params[:encryption_key].blank?
 
     input_text    = params[:input_text]
     algorithm_key = params[:algorithm].to_sym
@@ -32,6 +31,8 @@ class MainController < ApplicationController
 
     additional_params = sanitize_enigma_params(params)
     encryption_service = Utils.choose_service(algorithm_key, additional_params)
+
+    raise InvalidInputError, "Encryption key cannot be blank" if !encryption_service.instance_of?(Ciphers::EnigmaCipher) && params[:encryption_key].blank?
 
     # Go through preparation
     plain_text = encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) || encryption_service.instance_of?(Ciphers::SuperEncryptionCipher) ? input_text : Utils.sanitize_text(input_text)
@@ -52,7 +53,6 @@ class MainController < ApplicationController
 
   def decrypt_text # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     raise InvalidInputError, "Input text cannot be blank" if params[:input_text].blank?
-    raise InvalidInputError, "Encryption key cannot be blank" if params[:encryption_key].blank?
 
     input_text = params[:input_text]
     algorithm_key = params[:algorithm].to_sym
@@ -60,6 +60,8 @@ class MainController < ApplicationController
 
     additional_params = sanitize_enigma_params(params)
     encryption_service = Utils.choose_service(algorithm_key, additional_params)
+
+    raise InvalidInputError, "Encryption key cannot be blank" if !encryption_service.instance_of?(Ciphers::EnigmaCipher) && params[:encryption_key].blank?
 
     input_text = Utils.sanitize_text(input_text) unless encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) || encryption_service.instance_of?(Ciphers::SuperEncryptionCipher)
     key = Utils.sanitize_text(key) unless encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) || encryption_service.instance_of?(Ciphers::SuperEncryptionCipher)
@@ -71,17 +73,15 @@ class MainController < ApplicationController
     session[:input_text] = input_text
     session[:key] = key
 
-    handle_result(decrypted_text, encryption_service, encoded_decrypted_text)
+    handle_result(decrypted_text, encoded_decrypted_text, encryption_service)
   rescue StandardError => e
     puts e.message
     redirect_to main_page_path and return
   end
 
-  def handle_result(result, encoded_result, direction)
+  def handle_result(result, encoded_result, encryption_service)
     if result
-      unless @encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) || (direction == :decrypt && @encryption_service.instance_of?(Ciphers::SuperEncryptionCipher))
-        session[:result_text] = result
-      end
+      session[:result_text] = result unless encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) || encryption_service.instance_of?(Ciphers::SuperEncryptionCipher)
       session[:encoded_result_text] = encoded_result
     else
       flash[:alert] = "Operation failed."
