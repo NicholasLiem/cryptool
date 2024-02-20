@@ -11,44 +11,42 @@ class MainController < ApplicationController
   def service_gateway
     case params[:service_type].upcase
     when 'ENCRYPT'
-      encrypt_text
+      encrypt
     when 'DECRYPT'
-      decrypt_text
+      decrypt
     else
       flash[:alert] = "Invalid service type."
       redirect_to main_page_path
     end
   end
 
-  # rubocop disable:Metrics/CyclomaticComplexity
-  def encrypt_text
-    # Extract parameters
-    # input_type = params[:input_type]
+  def encrypt
+    input_type    = params[:input_type]
     input_text    = params[:input_text]
+    file          = params[:file]
     algorithm_key = params[:algorithm].to_sym
     key           = params[:encryption_key]
 
     additional_params = sanitize_enigma_params(params)
     encryption_service = Utils.choose_service(algorithm_key, additional_params)
 
-    # Go through preparation
-    # Only sanitize when its not 256 ASCII
-    if !encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) && !encryption_service.instance_of?(Ciphers::SuperEncryptionCipher)
-      input_text = Utils.sanitize_text(input_text)
-      # Special key for Affine Cipher, dont sanitize
+    if input_type == 'Binary File' && file
+      input = handle_file_upload(file)
+    elsif !encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) && !encryption_service.instance_of?(Ciphers::SuperEncryptionCipher)
+      input = Utils.sanitize_text(input_text)
       key = Utils.sanitize_text(key) unless encryption_service.instance_of?(Ciphers::AffineCipher)
     end
 
-    puts "test" unless input_text
-
-    raise InvalidInputError, "Input must contain at least a valid character" if input_text.blank?
+    if input.blank? && !(encryption_service.instance_of?(Ciphers::SuperEncryptionCipher) || encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher)) && input_type == 'Binary'
+      raise InvalidInputError, "Input must contain at least a valid character"
+    end
     raise InvalidInputError, "Key must contain at least a valid character" if key.blank? && !encryption_service.instance_of?(Ciphers::EnigmaCipher)
 
-    encrypted_text = encryption_service.encrypt_data(input_text, key) if encryption_service
+    encrypted_text = encryption_service.encrypt_data(input, key) if encryption_service
     encoded_encrypted_text = Utils.encode_to_base64(encrypted_text)
 
     session[:cipher_name] = params[:algorithm].gsub("_", " ").upcase
-    session[:input_text] = input_text
+    session[:input_text] = input
     session[:key] = key
 
     handle_result(encrypted_text, encoded_encrypted_text, encryption_service)
@@ -57,11 +55,10 @@ class MainController < ApplicationController
     redirect_to main_page_path and return
   end
 
-  # rubocop disable:Metrics/CyclomaticComplexity
-  def decrypt_text
-    input_text = params[:input_text]
+  def decrypt
+    input_text    = params[:input_text]
     algorithm_key = params[:algorithm].to_sym
-    key = params[:encryption_key]
+    key           = params[:encryption_key]
 
     additional_params = sanitize_enigma_params(params)
     encryption_service = Utils.choose_service(algorithm_key, additional_params)
@@ -102,6 +99,16 @@ class MainController < ApplicationController
   def sanitize_enigma_params(params)
     %i[plugboard_input rotor_1_input rotor_2_input rotor_3_input reflector_input].to_h do |key|
       [key, Utils.sanitize_enigma_text(params[key])]
+    end
+  end
+
+  def handle_file_upload(file)
+    raise InvalidInputError, "File upload failed" unless file
+
+    if File.extname(file.original_filename) == '.txt'
+      file.read.gsub("\n", '')
+    else
+      file.read
     end
   end
 end
