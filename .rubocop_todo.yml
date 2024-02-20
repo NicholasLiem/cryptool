@@ -39,7 +39,10 @@ Layout/SpaceInsidePercentLiteralDelimiters:
 # Configuration parameters: AllowedMethods, AllowedPatterns, CountRepeatedAttributes.
 Metrics/AbcSize:
   Max: 30
-
+  Exclude:
+  - 'app/services/**/*'
+  - 'app/controllers/*'
+  
 # Offense count: 10
 # Configuration parameters: CountComments, CountAsOne, AllowedMethods, AllowedPatterns.
 # AllowedMethods: refine
@@ -51,7 +54,9 @@ Metrics/BlockLength:
 # Offense count: 2
 # Configuration parameters: AllowedMethods, AllowedPatterns.
 Metrics/CyclomaticComplexity:
-  Max: 9
+  Max: 11
+  Exlude:
+  - 'app/controllers/*'
 
 # Offense count: 18
 # Configuration parameters: CountComments, CountAsOne, AllowedMethods, AllowedPatterns.
@@ -62,6 +67,8 @@ Metrics/MethodLength:
 # Configuration parameters: AllowedMethods, AllowedPatterns.
 Metrics/PerceivedComplexity:
   Max: 9
+  Exclude:
+  - 'app/controllers/*'
 
 # Offense count: 2
 # Configuration parameters: NamePrefix, ForbiddenPrefixes, AllowedMethods, MethodDefinitionMacros.

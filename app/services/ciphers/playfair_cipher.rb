@@ -16,7 +16,7 @@ module Ciphers
       decrypt(cipher_text_bigram, key_square)
     end
 
-    def encrypt(data_bigram, key_square) # rubocop:disable Metrics/AbcSize
+    def encrypt(data_bigram, key_square)
       result = ""
       data_bigram.each do |item|
         first_char = item[0]
@@ -42,7 +42,7 @@ module Ciphers
       result
     end
 
-    def decrypt(cipher_text_bigram, key_square) # rubocop:disable Metrics/AbcSize
+    def decrypt(cipher_text_bigram, key_square)
       result = ""
       cipher_text_bigram.each do |item|
         first_char = item[0]

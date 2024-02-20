@@ -20,7 +20,8 @@ class MainController < ApplicationController
     end
   end
 
-  def encrypt_text # rubocop:disable Metrics/AbcSize
+  # rubocop disable:Metrics/CyclomaticComplexity
+  def encrypt_text
     # Extract parameters
     # input_type = params[:input_type]
     input_text    = params[:input_text]
@@ -34,11 +35,14 @@ class MainController < ApplicationController
     # Only sanitize when its not 256 ASCII
     if !encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) && !encryption_service.instance_of?(Ciphers::SuperEncryptionCipher)
       input_text = Utils.sanitize_text(input_text)
-      key = Utils.sanitize_text(key)
+      # Special key for Affine Cipher, dont sanitize
+      key = Utils.sanitize_text(key) unless encryption_service.instance_of?(Ciphers::AffineCipher)
     end
 
+    puts "test" unless input_text
+
     raise InvalidInputError, "Input must contain at least a valid character" if input_text.blank?
-    raise InvalidInputError, "Key must contain at least a valid character" if !encryption_service.instance_of?(Ciphers::EnigmaCipher) && params[:encryption_key].blank?
+    raise InvalidInputError, "Key must contain at least a valid character" if key.blank? && !encryption_service.instance_of?(Ciphers::EnigmaCipher)
 
     encrypted_text = encryption_service.encrypt_data(input_text, key) if encryption_service
     encoded_encrypted_text = Utils.encode_to_base64(encrypted_text)
@@ -53,7 +57,8 @@ class MainController < ApplicationController
     redirect_to main_page_path and return
   end
 
-  def decrypt_text # rubocop:disable Metrics/AbcSize
+  # rubocop disable:Metrics/CyclomaticComplexity
+  def decrypt_text
     input_text = params[:input_text]
     algorithm_key = params[:algorithm].to_sym
     key = params[:encryption_key]
@@ -64,11 +69,12 @@ class MainController < ApplicationController
     # Only sanitize when its not 256 ASCII
     if !encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) && !encryption_service.instance_of?(Ciphers::SuperEncryptionCipher)
       input_text = Utils.sanitize_text(input_text)
-      key = Utils.sanitize_text(key)
+      # Special key for Affine Cipher, dont sanitize
+      key = Utils.sanitize_text(key) unless encryption_service.instance_of?(Ciphers::AffineCipher)
     end
 
     raise InvalidInputError, "Input must contain at least a valid character" if input_text.blank?
-    raise InvalidInputError, "Key must contain at least a valid character" if !encryption_service.instance_of?(Ciphers::EnigmaCipher) && params[:encryption_key].blank?
+    raise InvalidInputError, "Key must contain at least a valid character" if key.blank? && !encryption_service.instance_of?(Ciphers::EnigmaCipher)
 
     decrypted_text = encryption_service.decrypt_data(input_text, key) if encryption_service
     encoded_decrypted_text = Utils.encode_to_base64(decrypted_text)
