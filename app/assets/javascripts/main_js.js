@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
       openDefaultKey();
     } else if (this.value == "enigma") {
       cipher_hint.innerHTML = 
-        "Please insert a randomize sequence of all the alphabets characters. Example: BFWASDMN...";
+        "Please insert a randomize sequence of all the alphabets characters with length 26 and unique. For each character in input will be mapped to the corresponding index in alphabet. Example: ZXC.., Mapping would be like A => Z, B => X, C => C";
       closeDefaultKey();
       openEnigmaKey();
     } else {
