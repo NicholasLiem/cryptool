@@ -1,6 +1,6 @@
 <%= javascript_include_tag 'main_js' %>
 <%= stylesheet_link_tag "main_sheets" %>
-<%= form_with url: service_gateway_path, local: true do |form| %>
+<%= form_with url: service_gateway_path, local: true, multipart: true do |form| %>
 <div class='page-container'>
   
   <div class='title-container'>
@@ -132,8 +132,9 @@
 <% if flash[:alert] %>
   <script type="text/javascript">
     alert("<%= j flash[:alert] %>");
-    location.reload()
+    location.reload();
   </script>
 <% end %>
 
+<%= form.submit %>
 <% end %>

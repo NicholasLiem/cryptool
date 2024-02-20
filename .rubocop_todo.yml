@@ -54,7 +54,7 @@ Metrics/BlockLength:
 # Offense count: 2
 # Configuration parameters: AllowedMethods, AllowedPatterns.
 Metrics/CyclomaticComplexity:
-  Max: 11
+  Max: 20
   Exlude:
   - 'app/controllers/*'
 

@@ -299,6 +299,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   puma (>= 5.0)
+  rack-test
   rails (~> 7.1.2)
   rspec-rails
   rubocop
