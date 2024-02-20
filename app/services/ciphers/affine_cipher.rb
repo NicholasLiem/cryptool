@@ -11,6 +11,11 @@ module Ciphers
       temp
     end
 
+    def relative_prime_to_modulo(num)
+      # Num should be odd and not divideable by 13
+      num.odd? && (num % 13 != 0)
+    end
+
     def encrypt_data(data, key)
       key = key.gsub('-', ' ')
       keys = key.split
@@ -18,6 +23,9 @@ module Ciphers
       return raise InvalidInputError, "Keys must be two numbers seperated by a hyphen" unless Utils.is_integer(keys[0]) && Utils.is_integer(keys[1])
 
       m = keys[0].to_i
+
+      return raise InvalidInputError, "First key (m) should be relatively prime to 26" unless relative_prime_to_modulo(m)
+
       b = keys[1].to_i
 
       plain_text = data
@@ -47,6 +55,9 @@ module Ciphers
       return raise InvalidInputError, "Keys must be two numbers seperated by a hyphen" unless Utils.is_integer(keys[0]) && Utils.is_integer(keys[1])
 
       m = keys[0].to_i
+
+      return raise InvalidInputError, "First key (m) should be relatively prime to 26" unless relative_prime_to_modulo(m)
+
       b = keys[1].to_i
 
       cipher_text = data

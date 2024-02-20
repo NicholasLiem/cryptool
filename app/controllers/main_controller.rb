@@ -30,7 +30,10 @@ class MainController < ApplicationController
     additional_params = sanitize_enigma_params(params)
     encryption_service = Utils.choose_service(algorithm_key, additional_params)
 
-    input = handle_file_upload(file, encryption_service) if input_type == 'Binary File' && file
+    if input_type == 'Binary File' && file
+      input = handle_file_upload(file, encryption_service)
+      session[:is_input_file] = true
+    end
     if !encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) && !encryption_service.instance_of?(Ciphers::SuperEncryptionCipher)
       input = Utils.sanitize_text(input)
       key = Utils.sanitize_text(key) unless encryption_service.instance_of?(Ciphers::AffineCipher)
@@ -45,7 +48,7 @@ class MainController < ApplicationController
     encoded_encrypted_text = Utils.encode_to_base64(encrypted_text)
 
     session[:cipher_name] = params[:algorithm].gsub("_", " ").upcase
-    session[:input_text] = input
+    session[:input_text] = input.length > 50 ? "#{input.slice(0, 49)}..." : input
     session[:key] = key
 
     handle_result(encrypted_text, encoded_encrypted_text, encryption_service)
@@ -65,7 +68,10 @@ class MainController < ApplicationController
     encryption_service = Utils.choose_service(algorithm_key, additional_params)
 
     # Only sanitize when its not 256 ASCII
-    input = handle_file_upload(file, encryption_service) if input_type == 'Binary File' && file
+    if input_type == 'Binary File' && file
+      input = handle_file_upload(file, encryption_service)
+      session[:is_input_file] = true
+    end
     if !encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) && !encryption_service.instance_of?(Ciphers::SuperEncryptionCipher)
       input = Utils.sanitize_text(input)
       # Special key for Affine Cipher, dont sanitize
@@ -81,7 +87,7 @@ class MainController < ApplicationController
     encoded_decrypted_text = Utils.encode_to_base64(decrypted_text)
 
     session[:cipher_name] = params[:algorithm].gsub("_", " ").upcase
-    session[:input_text] = input
+    session[:input_text] = input.length > 100 ? "#{input.slice(0, 99)}..." : input
     session[:key] = key
 
     handle_result(decrypted_text, encoded_decrypted_text, encryption_service)
