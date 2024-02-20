@@ -48,7 +48,7 @@ class MainController < ApplicationController
     session[:key] = key
 
     handle_result(encrypted_text, encoded_encrypted_text, encryption_service)
-  rescue InvalidInputError => e
+  rescue StandardError => e
     flash[:alert] = e.message
     redirect_to main_page_path and return
   end
