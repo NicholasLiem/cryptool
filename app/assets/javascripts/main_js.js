@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var audio = document.getElementById("music");
   audio.volume = 0.2;
   audio.addEventListener("canplaythrough", function () {
-    // audio.play();
+    audio.play();
   });
 });
 
@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
       closeEnigmaKey();
       openDefaultKey();
     } else if (this.value == "enigma") {
-      cipher_hint.innerHTML =
+      cipher_hint.innerHTML = 
         "Please insert a randomize sequence of all the alphabets characters. Example: BFWASDMN...";
       closeDefaultKey();
       openEnigmaKey();
