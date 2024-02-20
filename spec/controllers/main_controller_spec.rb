@@ -19,7 +19,8 @@ RSpec.describe MainController, type: :controller do
       let(:uploaded_file) { Rack::Test::UploadedFile.new(img_file_path, 'image/jpeg') }
 
       it 'correctly parse the contents data as ascii' do
-        expect { main_controller.handle_file_upload(uploaded_file, service_type) }.to raise_error(InvalidInputError, "File type is not supported for this encryption algorithm")      end
+        expect { main_controller.handle_file_upload(uploaded_file, service_type) }.to raise_error(InvalidInputError, "File type is not supported for this encryption algorithm")
+      end
     end
   end
 end
