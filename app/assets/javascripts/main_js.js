@@ -71,13 +71,20 @@ document.addEventListener("DOMContentLoaded", function () {
       closeEnigmaKey();
       openDefaultKey();
     }
+    location.reload
   });
 });
 
 var blackoverlay = document.getElementById("black-overlay");
 var popup = document.getElementById("popup");
+var encryptButton = document.getElementById("encrypt-button")
+var decryptButton = document.getElementById("decrypt-button")
+
 function closePopup() {
   popup.style.display = "none";
   location.reload();
 }
+
 blackoverlay.addEventListener("click", closePopup);
+encryptButton.addEventListener("click", location.reload);
+decryptButton.addEventListener("click", location.reload);

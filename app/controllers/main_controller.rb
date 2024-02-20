@@ -30,7 +30,7 @@ class MainController < ApplicationController
     additional_params = sanitize_enigma_params(params)
     encryption_service = Utils.choose_service(algorithm_key, additional_params)
 
-    input = handle_file_upload(file) if input_type == 'Binary File' && file
+    input = handle_file_upload(file, encryption_service) if input_type == 'Binary File' && file
     if !encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) && !encryption_service.instance_of?(Ciphers::SuperEncryptionCipher)
       input = Utils.sanitize_text(input)
       key = Utils.sanitize_text(key) unless encryption_service.instance_of?(Ciphers::AffineCipher)
@@ -65,8 +65,7 @@ class MainController < ApplicationController
     encryption_service = Utils.choose_service(algorithm_key, additional_params)
 
     # Only sanitize when its not 256 ASCII
-
-    input = handle_file_upload(file) if input_type == 'Binary File' && file
+    input = handle_file_upload(file, encryption_service) if input_type == 'Binary File' && file
     if !encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) && !encryption_service.instance_of?(Ciphers::SuperEncryptionCipher)
       input = Utils.sanitize_text(input)
       # Special key for Affine Cipher, dont sanitize
@@ -107,13 +106,13 @@ class MainController < ApplicationController
     end
   end
 
-  def handle_file_upload(file)
+  def handle_file_upload(file, service)
     raise InvalidInputError, "File upload failed" unless file
 
-    if File.extname(file.original_filename) == '.txt'
-      file.read.gsub("\n", '')
-    else
-      file.read
-    end
+    return file.read if service.instance_of?(Ciphers::ExtendedVigenereCipher) || service.instance_of?(Ciphers::SuperEncryptionCipher)
+
+    raise InvalidInputError, "File type is not supported for this encryption algorithm" unless File.extname(file.original_filename) == '.txt'
+
+    file.read.gsub("\n", '')
   end
 end
