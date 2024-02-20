@@ -9,10 +9,10 @@ class MainController < ApplicationController
   end
 
   def service_gateway
-    case params[:service_type]
-    when 'encrypt'
+    case params[:service_type].upcase
+    when 'ENCRYPT'
       encrypt_text
-    when 'decrypt'
+    when 'DECRYPT'
       decrypt_text
     else
       flash[:alert] = "Invalid service type."
@@ -20,11 +20,9 @@ class MainController < ApplicationController
     end
   end
 
-  def encrypt_text # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+  def encrypt_text # rubocop:disable Metrics/AbcSize
     # Extract parameters
     # input_type = params[:input_type]
-    raise InvalidInputError, "Input text cannot be blank" if params[:input_text].blank?
-
     input_text    = params[:input_text]
     algorithm_key = params[:algorithm].to_sym
     key           = params[:encryption_key]
@@ -32,28 +30,30 @@ class MainController < ApplicationController
     additional_params = sanitize_enigma_params(params)
     encryption_service = Utils.choose_service(algorithm_key, additional_params)
 
-    raise InvalidInputError, "Encryption key cannot be blank" if !encryption_service.instance_of?(Ciphers::EnigmaCipher) && params[:encryption_key].blank?
-
     # Go through preparation
-    plain_text = encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) || encryption_service.instance_of?(Ciphers::SuperEncryptionCipher) ? input_text : Utils.sanitize_text(input_text)
-    key = Utils.sanitize_text(key) unless encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) || encryption_service.instance_of?(Ciphers::SuperEncryptionCipher)
+    # Only sanitize when its not 256 ASCII
+    if !encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) && !encryption_service.instance_of?(Ciphers::SuperEncryptionCipher)
+      input_text = Utils.sanitize_text(input_text)
+      key = Utils.sanitize_text(key)
+    end
 
-    encrypted_text = encryption_service.encrypt_data(plain_text, key) if encryption_service
+    raise InvalidInputError, "Input must contain at least a valid character" if input_text.blank?
+    raise InvalidInputError, "Key must contain at least a valid character" if !encryption_service.instance_of?(Ciphers::EnigmaCipher) && params[:encryption_key].blank?
+
+    encrypted_text = encryption_service.encrypt_data(input_text, key) if encryption_service
     encoded_encrypted_text = Utils.encode_to_base64(encrypted_text)
 
     session[:cipher_name] = params[:algorithm].gsub("_", " ").upcase
-    session[:input_text] = plain_text
+    session[:input_text] = input_text
     session[:key] = key
 
     handle_result(encrypted_text, encoded_encrypted_text, encryption_service)
-  rescue StandardError => e
+  rescue InvalidInputError => e
     flash[:alert] = e.message
     redirect_to main_page_path and return
   end
 
-  def decrypt_text # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
-    raise InvalidInputError, "Input text cannot be blank" if params[:input_text].blank?
-
+  def decrypt_text # rubocop:disable Metrics/AbcSize
     input_text = params[:input_text]
     algorithm_key = params[:algorithm].to_sym
     key = params[:encryption_key]
@@ -61,10 +61,14 @@ class MainController < ApplicationController
     additional_params = sanitize_enigma_params(params)
     encryption_service = Utils.choose_service(algorithm_key, additional_params)
 
-    raise InvalidInputError, "Encryption key cannot be blank" if !encryption_service.instance_of?(Ciphers::EnigmaCipher) && params[:encryption_key].blank?
+    # Only sanitize when its not 256 ASCII
+    if !encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) && !encryption_service.instance_of?(Ciphers::SuperEncryptionCipher)
+      input_text = Utils.sanitize_text(input_text)
+      key = Utils.sanitize_text(key)
+    end
 
-    input_text = Utils.sanitize_text(input_text) unless encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) || encryption_service.instance_of?(Ciphers::SuperEncryptionCipher)
-    key = Utils.sanitize_text(key) unless encryption_service.instance_of?(Ciphers::ExtendedVigenereCipher) || encryption_service.instance_of?(Ciphers::SuperEncryptionCipher)
+    raise InvalidInputError, "Input must contain at least a valid character" if input_text.blank?
+    raise InvalidInputError, "Key must contain at least a valid character" if !encryption_service.instance_of?(Ciphers::EnigmaCipher) && params[:encryption_key].blank?
 
     decrypted_text = encryption_service.decrypt_data(input_text, key) if encryption_service
     encoded_decrypted_text = Utils.encode_to_base64(decrypted_text)
@@ -75,7 +79,7 @@ class MainController < ApplicationController
 
     handle_result(decrypted_text, encoded_decrypted_text, encryption_service)
   rescue StandardError => e
-    puts e.message
+    flash[:alert] = e.message
     redirect_to main_page_path and return
   end
 

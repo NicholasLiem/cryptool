@@ -7,12 +7,8 @@ module Utils
     char.to_i.to_s == char
   end
 
-  def sanitize_text_ascii(text)
-    text.gsub(" ", "").upcase.encode('ASCII', fallback: '?')
-  end
-
   def sanitize_text(text)
-    text.gsub(" ", "").upcase.encode('UTF-8')
+    text.gsub(/[^a-zA-Z]/, "").upcase.encode('UTF-8')
   end
 
   def sanitize_enigma_text(text)

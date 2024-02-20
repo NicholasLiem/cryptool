@@ -15,7 +15,7 @@ module Ciphers
       key = key.gsub('-', ' ')
       keys = key.split
 
-      return raise StandardError unless Utils.is_integer(keys[0]) && Utils.is_integer(keys[1])
+      return raise InvalidInputError, "Keys must be two numbers seperated by a hyphen" unless Utils.is_integer(keys[0]) && Utils.is_integer(keys[1])
 
       m = keys[0].to_i
       b = keys[1].to_i
@@ -44,7 +44,7 @@ module Ciphers
       key = key.gsub('-', ' ')
       keys = key.split
 
-      return raise StandardError unless Utils.is_integer(keys[0]) && Utils.is_integer(keys[1])
+      return raise InvalidInputError, "Keys must be two numbers seperated by a hyphen" unless Utils.is_integer(keys[0]) && Utils.is_integer(keys[1])
 
       m = keys[0].to_i
       b = keys[1].to_i

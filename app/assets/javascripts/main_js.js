@@ -59,7 +59,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (this.value === "affine") {
       cipher_hint.innerHTML =
         "First key and second key need to be seperated by a hyphen ('-'). Example: 2-5";
-      console.log(cipher_hint);
       closeEnigmaKey();
       openDefaultKey();
     } else if (this.value == "enigma") {
@@ -79,36 +78,6 @@ var blackoverlay = document.getElementById("black-overlay");
 var popup = document.getElementById("popup");
 function closePopup() {
   popup.style.display = "none";
-  console.log("tutup");
+  location.reload()
 }
 blackoverlay.addEventListener("click", closePopup);
-
-document.addEventListener("DOMContentLoaded", function () {
-  var result = document.getElementById("result");
-  var popup = document.getElementById("popup");
-  var encrypt = document.getElementById("encrypt");
-  var decrypt = document.getElementById("decrypt");
-  function openPopup() {
-    event.preventDefault();
-    popup.style.display = "flex";
-    console.log("buka");
-  }
-  function openPopupSubmit() {
-    popup.style.display = "flex";
-    console.log("buka");
-  }
-  result.addEventListener("click", openPopup);
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-  function openPopup() {
-    event.preventDefault();
-    popup.style.display = "flex";
-    console.log("buka");
-  }
-  function openPopupSubmit() {
-    popup.style.display = "flex";
-    console.log("buka");
-  }
-  result.addEventListener("click", openPopup);
-});
