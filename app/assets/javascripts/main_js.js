@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   var audio = document.getElementById("music");
-  audio.volume = 0.2;
+  // audio.volume = 0.2;
   audio.addEventListener("canplaythrough", function () {
     audio.play();
   });

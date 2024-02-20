@@ -125,6 +125,9 @@
         <p> Encoded to Base64 Result: </p>
         <textarea class="result-text-area" readonly><%= @encoded_result_text %></textarea>
       <% end %>
+
+      
+      <%= submit_tag "Download Result", name: "service_type", value: "Download", id: "download", class: 'download-button' %>
     </div>
   </div>
 <% end %>

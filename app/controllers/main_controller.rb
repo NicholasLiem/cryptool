@@ -1,4 +1,9 @@
 class MainController < ApplicationController
+  def reset_result
+    @@result_encrypted_text = nil # rubocop:disable Style/ClassVars
+    @@result_decrypted_text = nil # rubocop:disable Style/ClassVars
+  end
+
   def show
     @result_text = session.delete(:result_text)
     @encoded_result_text = session.delete(:encoded_result_text)
@@ -14,6 +19,8 @@ class MainController < ApplicationController
       encrypt
     when 'DECRYPT'
       decrypt
+    when 'DOWNLOAD'
+      download
     else
       flash[:alert] = "Invalid service type."
       redirect_to main_page_path
@@ -21,6 +28,7 @@ class MainController < ApplicationController
   end
 
   def encrypt
+    reset_result
     input_type    = params[:input_type]
     input         = params[:input_text]
     file          = params[:file]
@@ -45,6 +53,7 @@ class MainController < ApplicationController
     raise InvalidInputError, "Key must contain at least a valid character" if key.blank? && !encryption_service.instance_of?(Ciphers::EnigmaCipher)
 
     encrypted_text = encryption_service.encrypt_data(input, key) if encryption_service
+    @@result_encrypted_text = encrypted_text.dup # rubocop:disable Style/ClassVars
     encoded_encrypted_text = Utils.encode_to_base64(encrypted_text)
 
     session[:cipher_name] = params[:algorithm].gsub("_", " ").upcase
@@ -58,6 +67,7 @@ class MainController < ApplicationController
   end
 
   def decrypt
+    reset_result
     input         = params[:input_text]
     file          = params[:file]
     input_type    = params[:input_type]
@@ -84,6 +94,7 @@ class MainController < ApplicationController
     raise InvalidInputError, "Key must contain at least a valid character" if key.blank? && !encryption_service.instance_of?(Ciphers::EnigmaCipher)
 
     decrypted_text = encryption_service.decrypt_data(input, key) if encryption_service
+    @@result_decrypted_text = decrypted_text.dup # rubocop:disable Style/ClassVars
     encoded_decrypted_text = Utils.encode_to_base64(decrypted_text)
 
     session[:cipher_name] = params[:algorithm].gsub("_", " ").upcase
@@ -114,11 +125,17 @@ class MainController < ApplicationController
 
   def handle_file_upload(file, service)
     raise InvalidInputError, "File upload failed" unless file
-
     return file.read if service.instance_of?(Ciphers::ExtendedVigenereCipher) || service.instance_of?(Ciphers::SuperEncryptionCipher)
-
     raise InvalidInputError, "File type is not supported for this encryption algorithm" unless File.extname(file.original_filename) == '.txt'
 
     file.read.gsub("\n", '')
+  end
+
+  def download
+    text_to_download = @@result_encrypted_text || @@result_decrypted_text
+    # response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    # response.headers['Pragma'] = 'no-cache'
+    # response.headers['Expires'] = '0'
+    send_data text_to_download, filename: "result.txt", type: "text/plain", disposition: "attachment"
   end
 end

@@ -4,5 +4,5 @@ Rails.application.routes.draw do
 
   # File handling routes
   post  'cryptool/service', to: 'main#service_gateway', as: 'service_gateway'
-  get   'cryptool/download/:id', to: 'encryption#download', as: 'download_encrypted_file'
+  get   'cryptool/download', to: 'main#download', as: 'download_encrypted_file'
 end

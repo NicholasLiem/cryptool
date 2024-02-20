@@ -3,3 +3,6 @@ inherit_from: .rubocop_todo.yml
 AllCops:
   SuggestExtensions: false
   NewCops: enable
+
+Metrics/ClassLength:
+  Max: 200 # Set your desired maximum number of lines here
