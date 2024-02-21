@@ -70,3 +70,5 @@ group :test do
   gem "rspec-rails"
   gem "rack-test"
 end
+
+gem 'mime-types', require: 'mime/types'

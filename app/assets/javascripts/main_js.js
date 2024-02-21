@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
   var audio = document.getElementById("music");
-  // audio.volume = 0.2;
+  audio.volume = 0.2;
   audio.addEventListener("canplaythrough", function () {
-    audio.play();
+    // audio.play();
   });
 });
 
@@ -58,11 +58,11 @@ document.addEventListener("DOMContentLoaded", function () {
   algorithmSelect.addEventListener("change", function () {
     if (this.value === "affine") {
       cipher_hint.innerHTML =
-        "First key and second key need to be seperated by a hyphen ('-'). Example: 2-5";
+        "First key and second key need to be seperated by a hyphen ('-'). Example: 3-5";
       closeEnigmaKey();
       openDefaultKey();
     } else if (this.value == "enigma") {
-      cipher_hint.innerHTML = 
+      cipher_hint.innerHTML =
         "Please insert a randomize sequence of all the alphabets characters with length 26 and unique. For each character in input will be mapped to the corresponding index in alphabet. Example: ZXC.., Mapping would be like A => Z, B => X, C => C";
       closeDefaultKey();
       openEnigmaKey();
@@ -71,14 +71,14 @@ document.addEventListener("DOMContentLoaded", function () {
       closeEnigmaKey();
       openDefaultKey();
     }
-    location.reload
+    location.reload;
   });
 });
 
 var blackoverlay = document.getElementById("black-overlay");
 var popup = document.getElementById("popup");
-var encryptButton = document.getElementById("encrypt-button")
-var decryptButton = document.getElementById("decrypt-button")
+var encryptButton = document.getElementById("encrypt-button");
+var decryptButton = document.getElementById("decrypt-button");
 
 function closePopup() {
   popup.style.display = "none";
