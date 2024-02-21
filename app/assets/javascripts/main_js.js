@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var audio = document.getElementById("music");
   audio.volume = 0.2;
   audio.addEventListener("canplaythrough", function () {
-    // audio.play();
+    audio.play();
   });
 });
 
@@ -75,16 +75,49 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-var blackoverlay = document.getElementById("black-overlay");
-var popup = document.getElementById("popup");
-var encryptButton = document.getElementById("encrypt-button");
-var decryptButton = document.getElementById("decrypt-button");
-
 function closePopup() {
   popup.style.display = "none";
   location.reload();
 }
 
+var blackoverlay = document.getElementById("black-overlay");
+var popup = document.getElementById("popup");
+var download = document.getElementById("download")
+
 blackoverlay.addEventListener("click", closePopup);
-encryptButton.addEventListener("click", location.reload);
-decryptButton.addEventListener("click", location.reload);
+download.addEventListener("click", function () {
+  fetch("/cryptool/download") 
+    .then(response => {
+      if (!response.ok){
+        throw new Error("Bad Response Detected")
+      }
+
+      var contentDisposition = response.headers.get('content-disposition');
+      var filename = '';
+      if (contentDisposition && contentDisposition.indexOf('attachment') !== -1) {
+        var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+        var matches = filenameRegex.exec(contentDisposition);
+        if (matches != null && matches[1]) {
+          filename = matches[1].replace(/['"]/g, '');
+        }
+        filename = filename.replace(/\.[^/.]+$/, ""); // Remove extension
+      }
+      return response.blob()
+    })
+    .then(blob => {
+      var url = window.URL.createObjectURL(blob);
+      var link = document.createElement('a')
+      link.href = url
+      link.download = "result"
+      
+      document.body.appendChild(link)
+      link.click()
+
+      link.remove()
+      window.URL.revokeObjectURL(url);
+    })
+    .catch(error => {
+      console.error(error)
+    })
+})
+

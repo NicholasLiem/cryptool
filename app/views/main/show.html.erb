@@ -126,8 +126,9 @@
         <textarea class="result-text-area" readonly><%= @encoded_result_text %></textarea>
       <% end %>
 
-      
-      <%= submit_tag "Download Result", name: "service_type", value: "Download", id: "download", class: 'download-button' %>
+      <div id='download'>
+        <%= submit_tag "Download Result", name: "service_type", value: "Download", class: 'download-button' %>
+      </div>
     </div>
   </div>
 <% end %>
