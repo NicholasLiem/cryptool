@@ -136,6 +136,14 @@ class MainController < ApplicationController
     # response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
     # response.headers['Pragma'] = 'no-cache'
     # response.headers['Expires'] = '0'
-    send_data text_to_download, filename: "result.txt", type: "text/plain", disposition: "attachment"
+
+    timestamp = Time.now.strftime("%Y%m%d%H%M%S")
+    file_name = timestamp+"_result.txt"
+
+    file_path = Rails.root.join('tmp', file_name)
+    File.open(file_path, 'w') do |file|
+      file.write(text_to_download)
+    end
+    send_file file_path, filename: file_name, type: "text/plain", disposition: "attachment"
   end
 end
