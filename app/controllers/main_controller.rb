@@ -138,12 +138,10 @@ class MainController < ApplicationController
     # response.headers['Expires'] = '0'
 
     timestamp = Time.now.strftime("%Y%m%d%H%M%S")
-    file_name = timestamp+"_result.txt"
+    file_name = "#{timestamp}_result.txt"
 
     file_path = Rails.root.join('tmp', file_name)
-    File.open(file_path, 'w') do |file|
-      file.write(text_to_download)
-    end
+    File.write(file_path, text_to_download)
     send_file file_path, filename: file_name, type: "text/plain", disposition: "attachment"
   end
 end
