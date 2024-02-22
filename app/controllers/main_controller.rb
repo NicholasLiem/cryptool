@@ -65,7 +65,7 @@ class MainController < ApplicationController
     @@cipher_name = params[:algorithm].gsub("_", " ").upcase # rubocop:disable Style/ClassVars
     session[:cipher_name] = @@cipher_name
     input = input.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
-    session[:input_text] = input.length > 50 ? "#{input.slice(0, 49)}..." : input
+    session[:input_text] = input.length > 100 ? "#{input.slice(0, 99)}..." : input
     session[:key] = key
 
     handle_result(encrypted_text, encoded_encrypted_text, encryption_service)
@@ -104,7 +104,7 @@ class MainController < ApplicationController
 
     session[:cipher_name] = params[:algorithm].gsub("_", " ").upcase
     input = input.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
-    session[:input_text] = input.length > 50 ? "#{input.slice(0, 49)}..." : input
+    session[:input_text] = input.length > 100 ? "#{input.slice(0, 99)}..." : input
     session[:key] = key
 
     handle_result(decrypted_text, encoded_decrypted_text, encryption_service)
@@ -117,8 +117,8 @@ class MainController < ApplicationController
     if result
       result = result.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
       encoded_result = encoded_result.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
-      session[:result_text] = result.length > 50 ? "#{result.slice(0, 49)}..." : result
-      session[:encoded_result_text] = encoded_result.length > 50 ? "#{encoded_result.slice(0, 49)}..." : encoded_result
+      session[:result_text] = result.length > 100 ? "#{result.slice(0, 99)}..." : result
+      session[:encoded_result_text] = encoded_result.length > 100 ? "#{encoded_result.slice(0, 99)}..." : encoded_result
     else
       flash[:alert] = "Operation failed."
     end

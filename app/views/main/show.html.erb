@@ -120,7 +120,7 @@
         <p> Actual Result: </p>
         <textarea class="result-text-area" readonly><%= @result_text %></textarea>
       <% end %>
-
+      <p> For Extended Vigenere and Super Encryption, some characters in the actual result may lost because not every ASCII character can be displayed in UTF-8 character. </p>
       <% if @encoded_result_text %>
         <p> Encoded to Base64 Result: </p>
         <textarea class="result-text-area" readonly><%= @encoded_result_text %></textarea>

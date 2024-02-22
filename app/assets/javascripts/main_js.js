@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
   algorithmSelect.addEventListener("change", function () {
     if (this.value === "affine") {
       cipher_hint.innerHTML =
-        "First key and second key need to be seperated by a hyphen ('-'). Example: 3-5";
+        "First key and second key need to be seperated by a hyphen ('-'). Example: 3-5. The first key must be relatively prime to 26.";
       closeEnigmaKey();
       openDefaultKey();
     } else if (this.value == "enigma") {
