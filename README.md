@@ -38,3 +38,7 @@ http://localhost:3000/
 
 ## ⚠️ Dependencies 
 * Mime-types for file handling
+
+## 🖥️ Contributors
+* Juan Christopher Santoso (13521116)
+* Nicholas Liem (13521135)
