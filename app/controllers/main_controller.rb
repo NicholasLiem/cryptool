@@ -123,6 +123,13 @@ class MainController < ApplicationController
       flash[:alert] = "Operation failed."
     end
     redirect_to main_page_path
+    clear_cookies
+  end
+
+  def clear_cookies
+    cookies.each do |cookie|
+      cookies.delete(cookie)
+    end
   end
 
   def sanitize_enigma_params(params)
