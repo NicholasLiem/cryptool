@@ -39,16 +39,6 @@ ActiveRecord::Schema[7.1].define(version: 20_240_215_133_732) do
     t.index %w[blob_id variation_digest], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "encrypted_files", force: :cascade do |t|
-    t.string "name"
-    t.string "file_path"
-    t.string "algorithm"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "input_type", default: "Text", null: false
-    t.string "key", null: false
-  end
-
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
 end
