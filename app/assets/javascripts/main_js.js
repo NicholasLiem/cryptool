@@ -83,6 +83,7 @@ function closePopup() {
 var blackoverlay = document.getElementById("black-overlay");
 var popup = document.getElementById("popup");
 var download = document.getElementById("download")
+var filenameDownload = ''
 
 blackoverlay.addEventListener("click", closePopup);
 download.addEventListener("click", function () {
@@ -100,7 +101,8 @@ download.addEventListener("click", function () {
         if (matches != null && matches[1]) {
           filename = matches[1].replace(/['"]/g, '');
         }
-        filename = filename.replace(/\.[^/.]+$/, ""); // Remove extension
+        filenameDownload = filename
+        // filename = filename.replace(/\.[^/.]+$/, ""); // Remove extension
       }
       return response.blob()
     })
@@ -108,7 +110,7 @@ download.addEventListener("click", function () {
       var url = window.URL.createObjectURL(blob);
       var link = document.createElement('a')
       link.href = url
-      link.download = "result"
+      link.download = filenameDownload
       
       document.body.appendChild(link)
       link.click()
