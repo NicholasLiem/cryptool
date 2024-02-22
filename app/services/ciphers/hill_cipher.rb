@@ -25,6 +25,7 @@ module Ciphers
     def encrypt(data_array, key_array)
       result = ''
       key_matrix = Matrix[*key_array]
+      inverse_matrix(key_matrix)
 
       data_array.each do |data_slice|
         data_vector = Matrix.column_vector(data_slice)
@@ -77,7 +78,7 @@ module Ciphers
 
     def inverse_matrix(matrix)
       det = matrix.determinant
-      raise 'Matrix is not invertible' if det.zero?
+      raise 'Matrix is not invertible, use another key!' if det.zero?
 
       det_mod_inverse = modular_inverse(det, MODULUS)
       adjugate = matrix.adjugate
@@ -86,7 +87,7 @@ module Ciphers
 
     def modular_inverse(number, modulus)
       g, x = extended_gcd(number, modulus)
-      raise 'Modular inverse does not exist' if g != 1
+      raise 'Modular inverse does not exist, use another key!' if g != 1
 
       x % modulus
     end
